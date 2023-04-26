@@ -1,0 +1,29 @@
+public class TwoSum {
+
+     HashMap<Integer,Integer> data;
+     TwoSum(){
+         data=new HashMap<Integer,Integer>();
+     }
+    public void add(int number) {
+        data.put(number,data.getOrDefault(number,0)+1);
+    }
+
+    
+    public boolean find(int value) {
+        for(int key:data.keySet()){
+            int diff=value-key;
+            if(data.containsKey(diff)==true){
+                if(diff==key){   //checking duplicates constitute to value or not
+                    if(data.get(diff)>1){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+                return true;  //if diff!=key so diff found already return true;
+            }
+        }
+        return false;
+    }
+}
+    

@@ -1,0 +1,27 @@
+public clss Solution{
+  public int[] differencePair(int[] nums,int target){
+    int left=0;
+    int right=left+1;
+    int[] ans=new int[2];
+    while(left<nums.length && right < nums.length){
+      if(left==right){
+        if(target<0){
+          left++;
+        }else{
+          right++;
+        }
+      }
+      int diff=nums[right] - nums[left];
+      if(diff==target){
+        ans[0]=nums[left];
+        ans[1]=nums[right];
+        return ans;
+      }else if(diff>target){
+        left++;
+      }else{
+        right++;
+      }
+    }
+    return ans;
+  }
+}

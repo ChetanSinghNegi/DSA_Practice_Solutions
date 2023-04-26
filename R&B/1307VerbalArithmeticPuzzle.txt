@@ -1,0 +1,68 @@
+class Solution {
+    public boolean isSolvable(String[] words, String result) {
+        ArrayList<Character> uniq=new ArrayList<>();
+        HashMap<Character,Integer> hm=new HashMap<>();
+        for(int i=0;i<words.length;i++){
+            for(char ch:words[i].toCharArray()){
+                if(!hm.containsKey(ch)){
+                    hm.put(ch,Integer.MIN_VALUE);
+                    uniq.add(ch);
+                }
+            }
+        }
+        for(char ch:result.toCharArray()){
+            if(!hm.containsKey(ch)){
+                hm.put(ch,Integer.MIN_VALUE);
+                uniq.add(ch);
+            }
+        }
+        boolean[] taken=new boolean[10];
+        boolean isValid=helper(0,uniq,hm,words,result,taken);
+        return isValid;
+    }
+    public boolean calculationValid(HashMap<Character,Integer> hm,String[] words, String result){
+        int p=1;
+        int sum1=0;
+        int sum2=0;
+        for(int i=0;i<words.length;i++){
+            p=1;
+            for(int j=words[i].length()-1;j>=0;j--){
+                int currInt=p*hm.get(words[i].charAt(j));
+                sum1+=currInt;
+                p*=10;
+            }
+        }
+        p=1;
+        for(int i=result.length()-1;i>=0;i--){
+            char ch=result.charAt(i);
+            int currInt=p*hm.get(ch);
+            sum2+=currInt;
+            p*=10;
+        }
+        if(sum1==sum2){
+            return true;
+        }
+        return false;
+    }
+    public boolean helper(int idx,ArrayList<Character> al,HashMap<Character,Integer> hm,String[] words, String result, boolean[] taken){
+        if(idx==al.size()){
+            boolean checking=calculationValid(hm,words,result);
+            return checking;
+        }
+        char ch=al.get(idx);
+        for(int i=0;i<10;i++){
+            if(hm.get(ch)==Integer.MIN_VALUE && taken[i]==false){
+                hm.put(ch,i);
+                taken[i]=true;
+                boolean valid=helper(idx+1,al,hm,words,result,taken);
+                if(valid){
+                    return true;
+                }
+                hm.put(ch,Integer.MIN_VALUE);
+                taken[i]=false;
+
+            }
+        }
+        return false;
+    }
+}

@@ -1,0 +1,73 @@
+//box on level
+
+
+class Solution {
+  public List<List<Integer>> permuteUnique(int[] nums) {
+      HashMap<Integer,Integer> hm=new HashMap<>();
+      for(int val:nums){
+          if(hm.containsKey(val)){
+              int count=hm.get(val);
+              hm.put(val,count+1);
+          }else{
+              hm.put(val,1);
+          }
+      }
+      List<List<Integer>> permutations=new ArrayList<>();
+      List<Integer> permutation=new ArrayList<>();
+      permuteUniqueHelper(0,nums,hm,permutation,permutations);
+      return permutations;
+  }
+  public void permuteUniqueHelper(int currentBox,int[] nums,HashMap<Integer,Integer> hm,List<Integer> permutation,List<List<Integer>> permutations){
+      if(nums.length==currentBox){
+          List<Integer> copy=new ArrayList<>(permutation);
+          permutations.add(copy);
+          return;
+      }
+      for(Integer key:hm.keySet()){
+          int val=hm.get(key);
+          if(val>0){
+              hm.put(key,val-1);
+              permutation.add(key);
+              permuteUniqueHelper(currentBox+1,nums,hm,permutation,permutations);
+              permutation.remove(permutation.size()-1);
+              hm.put(key,val);
+          }
+      }
+  }
+
+}
+
+//Items on level
+
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        HashMap<Integer,Integer> lastIndex=new HashMap<>();
+        List<List<Integer>> permutations=new ArrayList<>();
+        List<Integer> permutation=new ArrayList<>();
+        for(int val:nums){
+            lastIndex.put(val,-1); //initializing lastIdx
+            permutation.add(null); //initializing
+        }
+        permuteUniqueHelper(0,nums,lastIndex,permutation,permutations);
+        return permutations;
+    }
+    public void permuteUniqueHelper(int currentLevel,int[] nums,HashMap<Integer,Integer> lastIndex,List<Integer> permutation,List<List<Integer>> permutations){
+        if(nums.length==currentLevel){
+            List<Integer> copy=new ArrayList<>(permutation);
+            permutations.add(copy);
+            return;
+        }
+        int currItem=nums[currentLevel];
+        int currItemLastIdx=lastIndex.get(currItem);
+        for(int i=currItemLastIdx+1;i<nums.length;i++){
+            if(permutation.get(i)==null){
+                permutation.set(i,currItem);
+                lastIndex.put(currItem,i);
+                permuteUniqueHelper(currentLevel+1,nums,lastIndex,permutation,permutations);
+                lastIndex.put(currItem,currItemLastIdx);
+                permutation.set(i,null);
+            }
+        }
+    }
+
+}

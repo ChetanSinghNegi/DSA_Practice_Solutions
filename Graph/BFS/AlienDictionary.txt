@@ -1,0 +1,42 @@
+class Solution
+{
+    StringBuilder topo=new StringBuilder("");
+    public void DFS(char src,ArrayList<Character>[] adj,boolean[] vis){
+        if(vis[src-'a']==true) return;
+        
+        vis[src-'a']=true;
+        for(Character nbr:adj[src-'a']) DFS(nbr,adj,vis);
+        topo.append(src);
+    }
+    
+    public String findOrder(String [] dict, int N, int K)
+    {
+        // Write your code here
+        ArrayList<Character>[] adj=new ArrayList[26];
+        for(int i=0;i<26;i++){
+            adj[i]=new ArrayList<>();
+        }
+        
+        //making of graph
+        for(int i=0;i<N-1;i++){
+            String s1=dict[i];
+            String s2=dict[i+1];
+            int smallLength=s1.length()<s2.length()?s1.length():s2.length();
+            for(int j=0;j<smallLength;j++){
+                if(s1.charAt(j)!=s2.charAt(j)){
+                    adj[s1.charAt(j)-'a'].add(s2.charAt(j));
+                    break;
+                }
+            }
+        }
+        
+        //finding topological sort
+        boolean[] vis=new boolean[26];
+        for(char src='a';src<='z';src++){
+            DFS(src,adj,vis);
+        }
+        
+        return topo.reverse().toString();
+    }
+    
+}

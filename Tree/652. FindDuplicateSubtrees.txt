@@ -1,0 +1,26 @@
+class Solution {
+    List<TreeNode> ans;
+    public String Serialization(TreeNode root,HashMap<String,Integer> hm){
+        if(root==null) return "#";
+
+        String currSerialized=root.val+","+Serialization(root.left,hm)+","+Serialization(root.right,hm);
+
+        //storing for only second time if subtree comes
+        if(hm.containsKey(currSerialized)==true){
+            if(hm.get(currSerialized)==1){
+                ans.add(root);
+            }
+        }
+
+        //increasing frequency
+        hm.put(currSerialized,hm.getOrDefault(currSerialized,0)+1);
+        
+        return currSerialized;
+    }
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        ans=new ArrayList<>();
+        HashMap<String,Integer> hm=new HashMap<>();
+        Serialization(root,hm);
+        return ans;
+    }
+}

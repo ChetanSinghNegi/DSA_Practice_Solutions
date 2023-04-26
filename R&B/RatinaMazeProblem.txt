@@ -1,0 +1,31 @@
+
+
+// m is the given matrix and n is the order of matrix
+class Solution {
+    public static ArrayList<String> findPath(int[][] m, int n) {
+        // Your code here
+        int x[]= {-1,0,1,0};
+        int y[]= {0,1,0,-1};
+        char z[]= {'U','R','D','L'};
+        ArrayList<String> ans=new ArrayList<>();
+        boolean[][] vis=new boolean[n][n];
+        findPathHelper(0,0,m,x,y,z,"",ans,vis);
+        return ans;
+    }
+    public static void findPathHelper(int sr,int sc,int[][] nums,int[] x,int[] y,char[] z,String str,ArrayList<String> ans ,boolean [][] vis){
+        if(sr<0 || sr==vis.length || sc<0 || sc==vis[0].length ||vis[sr][sc]==true ||nums[sr][sc]==0){
+            return;
+        }
+        if(sr==vis.length-1 && sc==vis[0].length-1 ){
+            ans.add(str);
+            return;
+        }
+        vis[sr][sc]=true;
+        for(int i=0;i<x.length;i++){
+            findPathHelper(sr+x[i],sc+y[i],nums,x,y,z,str+z[i],ans,vis);
+        }
+        vis[sr][sc]=false;
+        
+    }
+    
+}

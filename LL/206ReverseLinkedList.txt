@@ -1,0 +1,65 @@
+//     **************************pointer iterative*****************************
+
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode pre=null;
+        ListNode curr=head;
+        while(curr!=null){
+            ListNode post=curr.next;
+            curr.next=pre;
+            pre=curr;
+            curr=post;
+        }
+        head=pre;
+        return head;
+    }
+}
+
+
+
+
+//   ****************pointer recursive********************
+
+class Solution {
+    static ListNode left;
+    public ListNode reverseList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        left=head;
+        helper(head.next);
+        return head;
+    }
+    public boolean helper(ListNode right){
+        //base case
+        if(right==null ){
+            return false;
+        }
+
+        //doing recursion on the way down 
+        boolean inMid=helper(right.next);
+
+        //for odd case checking if they are same or not
+        if(left==right){
+            return true;
+        }
+
+        //before mid check
+        if(inMid==true) return true;
+
+        //after mid exchanging data of left and right pointer 
+        int temp=left.val;
+        left.val=right.val;
+        right.val=temp;
+        left=left.next;
+
+        //for even case again check for crossing of left and right
+        if(left==right){
+            return true;
+        }
+        return false;
+    }
+}

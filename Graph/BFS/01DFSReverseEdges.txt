@@ -1,0 +1,43 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+    public static class Pair{
+        int node,level;
+        Pair(int n,int d){
+            this.node=n;
+            this.level=d;
+        }
+    }
+    public static int reverseEdges(int n, int start, int end, ArrayList<ArrayList<Integer>> edgeList) {
+        // Write your code here
+        int[][] adj=new int[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                adj[i][j]=-1;
+            }
+        }
+        for(ArrayList<Integer> edge:edgeList){
+            adj[edge.get(0)][edge.get(1)]=0;
+            adj[edge.get(1)][edge.get(0)]=1;
+        }
+        Deque<Pair> q=new ArrayDeque<>();
+        int[] vis=new int[n];
+        for(int j=0;j<n;j++){
+            vis[j]=Integer.MAX_VALUE;
+        }
+        q.addFirst(new Pair(start,0));
+        while(q.size()>0){
+            Pair rem=q.removeFirst();
+            if(rem.level >= vis[rem.node]) continue;
+            vis[rem.node]=rem.level;
+            for(int i=0;i<n;i++){
+                if(adj[rem.node][i]==0) q.addFirst(new Pair(i,rem.level));
+                else if(adj[rem.node][i]==1) q.addLast(new Pair(i,rem.level+1));
+            }
+        }
+        return vis[end];
+
+    }
+}

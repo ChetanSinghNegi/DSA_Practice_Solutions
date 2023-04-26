@@ -1,0 +1,22 @@
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        if(num==0|| num==1){
+            return true;
+        }
+        long left=0;
+        long right=num/2;
+        boolean valid=false;
+        while(left<=right){
+            long mid=left+(right - left)/2;
+            long currSqr=mid*mid;
+            if(currSqr==num){
+                return true;
+            }else if(currSqr<num){
+                left=mid+1;
+            }else{
+                right=mid-1;
+            }
+        }
+        return false;
+    }
+}

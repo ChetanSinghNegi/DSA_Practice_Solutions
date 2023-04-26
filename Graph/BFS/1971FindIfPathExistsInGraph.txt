@@ -1,0 +1,63 @@
+public class Graph{
+    ArrayList<Integer>[] adj;
+    Graph(int n){
+        adj=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            adj[i]=new ArrayList<>();
+        }
+    }
+    public void addEdge(int src,int dest){
+        adj[src].add(dest);
+        adj[dest].add(src);
+    }
+
+    public boolean DFS(boolean[] dp,int source,int destination){
+        if(source==destination) return true;
+        if(dp[source]==true) return false;
+
+        dp[source]=true;
+        for(int i:adj[source]){
+                boolean ans=DFS(dp,i,destination);
+                if(ans==true) return true;
+        }
+        return false;
+    }
+    public boolean BFS(boolean[] vis,int src,int dest){
+        Queue<Integer> q=new ArrayDeque<>();
+        q.add(src);
+        while(q.size()>0){
+            int rem=q.remove();
+            if(vis[rem]==true) continue;
+            if(rem==dest) return true;
+            vis[rem]=true;
+            for(int i:adj[rem]){
+                if(vis[i]==false){
+                    q.add(i);
+                }
+            }
+        }
+        return false;
+    }
+    public boolean DFS(int source,int destination){
+        boolean[] dp=new boolean[adj.length];
+        return BFS(dp,source,destination);
+        // return DFS(dp,source,destination);
+    }
+}
+
+
+class Solution {
+    
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        
+        Graph graph=new Graph(n);
+        for(int i=0;i<edges.length;i++){
+            graph.addEdge(edges[i][0],edges[i][1]);
+        }
+
+        boolean ans=graph.DFS(source,destination);
+        return ans;
+    }
+
+    
+}

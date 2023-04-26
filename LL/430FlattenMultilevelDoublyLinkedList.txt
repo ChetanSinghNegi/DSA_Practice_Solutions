@@ -1,0 +1,41 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
+};
+*/
+
+class Solution {
+    public Node flatten(Node head) {
+        Node curr=head;
+        while(curr!=null){
+            if(curr.child!=null){
+                Node currNext=curr.next;  //saving our current Next
+                Node childHead=flatten(curr.child);  //got child head
+
+                //connecting child head to our next
+                curr.next=childHead;
+                curr.next.prev=curr;
+                curr.child=null;
+
+                //getting to the tail
+                while(curr.next!=null){
+                    curr=curr.next;
+                }
+
+                //if next is not null attach tail of child to currNext
+                if(currNext!=null){
+                    curr.next=currNext;
+                    curr.next.prev=curr;
+                }
+            }
+            curr=curr.next;
+        }
+
+        //return head of every flatten LL
+        return head;
+    }
+}

@@ -1,0 +1,63 @@
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> ans=new ArrayList<>();
+        boolean[][] chess=new boolean[n][n];
+        printNQueens(0,chess,ans);
+        return ans;
+    }
+
+    public static void printNQueens(int sr,boolean[][] chess ,List<List<String>> ans) {
+        if(sr==chess.length){
+            List<String> base=new ArrayList<>();
+            for(int i=0;i<chess.length;i++){
+                String str="";
+                for(int j=0;j<chess.length;j++){
+                    if(chess[i][j]==true){
+                        str+='Q';
+                    }else{
+                        str+='.';
+                    }
+                }
+                base.add(str);
+            }
+            ans.add(base);
+            return ;
+        }
+         
+        for(int c=0;c<chess.length;c++){
+             if(isSafe(sr,c,chess) ){ 
+                chess[sr][c]=true;
+                printNQueens(sr+1,chess,ans);
+                chess[sr][c]=false;
+            }
+        }
+        
+    }
+    public static boolean isSafe(int sr,int sc,boolean[][] chess){
+        for(int r=0;r<sr;r++){
+            if(chess[r][sc]==true){
+                return false;
+            }
+        }
+
+        int i=sr;
+        int j=sc;
+        while(i>=0 && j>=0){
+            if(chess[i][j]==true){
+                return false;
+            }
+            i--;
+            j--;
+        }
+        i=sr;
+        j=sc;
+        while(i>=0 && j<chess.length){
+            if(chess[i][j]==true){
+                return false;
+            }
+            i--;
+            j++;
+        }
+        return true;
+    }
+}

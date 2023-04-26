@@ -1,0 +1,45 @@
+class Solution {
+    int[][] dir={{-1,0},{0,1},{1,0},{0,-1}};
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int n=heights.length;
+        int m=heights[0].length;
+        boolean[][] pacificVis=new boolean[n][m];
+        boolean[][] atlanticVis=new boolean[n][m];
+        
+        //pacific test
+        for(int i=0;i<m;i++) DFS(0,i,heights,pacificVis);
+        for(int i=0;i<n;i++) DFS(i,0,heights,pacificVis);
+
+        //atlantic test
+        for(int i=0;i<m;i++) DFS(n-1,i,heights,atlanticVis);
+        for(int i=0;i<n;i++) DFS(i,m-1,heights,atlanticVis);
+
+        //Finding intersection and of waterFlows
+        List<List<Integer>> ans=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(pacificVis[i][j]==true && atlanticVis[i][j]==true){
+                    List<Integer> li=new ArrayList<>();
+                    li.add(i);
+                    li.add(j);
+                    ans.add(li);
+                }
+            }
+        }
+        return ans;
+    }
+    
+    public void DFS(int sr,int sc,int[][] heights,boolean[][] vis){
+        if(vis[sr][sc]==true) return;
+
+        vis[sr][sc]=true;
+        for(int i=0;i<4;i++){
+            int nr=sr+dir[i][0];
+            int nc=sc+dir[i][1];
+            if(nr<0 || nr>=heights.length || nc <0 || nc>=heights[0].length) continue;
+            if(heights[nr][nc] >= heights[sr][sc]) DFS(nr,nc,heights,vis);
+        }
+
+    }
+}

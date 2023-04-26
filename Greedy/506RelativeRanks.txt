@@ -1,0 +1,38 @@
+class Solution {
+    public class pair{
+        int val;
+        int idx;
+        pair(int val,int idx){
+            this.val=val;
+            this.idx=idx;
+        }
+    }
+    public static class myComp implements Comparator<pair>{
+        public int compare(pair p1,pair p2){
+            return p2.val-p1.val;
+        }
+    }
+    public String[] findRelativeRanks(int[] score) {
+        int n=score.length;
+        pair[] pairs=new pair[n];
+        for(int i=0;i<n;i++){
+            pair p=new pair(score[i],i);
+            pairs[i]=p;
+        }
+        Arrays.sort(pairs,new myComp());
+        String[] ans=new String[n];
+        for(int i=0;i<n;i++){
+            pair p=pairs[i];
+            if(i==0){
+                ans[p.idx]="Gold Medal";
+            }else if(i==1){
+                ans[p.idx]="Silver Medal";
+            }else if(i==2){
+                ans[p.idx]="Bronze Medal";
+            }else{
+                ans[p.idx]=i+1+"";
+            }
+        }
+        return ans;
+    }
+}

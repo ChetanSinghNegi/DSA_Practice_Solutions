@@ -1,0 +1,67 @@
+class Solution
+{
+    /*class Node {
+    	int data;
+    	Node left;
+    	Node right;
+    
+    	Node(int data) {
+    		this.data = data;
+    		left = null;
+    		right = null;
+    	}
+    }*/
+    
+    static int ans;
+    
+    public static int minTime(Node root, int target) 
+    {
+        // Your code goes here
+        ans=0;
+        dfs(root,target);
+        return ans;
+    }
+    
+    public static int dfs(Node root,int target){
+        if(root==null) return -1;
+
+        //if current treeNode is target treenode
+        if(root.data==target){
+            maxDepth(root,null,0);
+            return 1;
+        }
+
+        //found on left side
+        int lFound=dfs(root.left,target);
+        if(lFound>=0){
+            maxDepth(root,root.left,lFound);
+            return lFound+1;
+        }
+
+        //found on right side
+        int rFound=dfs(root.right,target);
+        if(rFound>=0){
+            maxDepth(root,root.right,rFound);
+            return rFound+1;
+        }
+
+        //default
+        return -1;
+
+    }
+    
+    public static void maxDepth(Node root,Node blocker,int time) {
+        
+        if(root==null || root==blocker){
+            return ;
+        }
+        
+        //if node not null then finding max depth node time
+        ans=Math.max(ans,time);
+        
+        maxDepth(root.left,blocker,time+1);
+        maxDepth(root.right,blocker,time+1);
+        
+        return ;
+    }
+}

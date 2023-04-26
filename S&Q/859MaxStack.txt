@@ -1,0 +1,103 @@
+class MaxStack {
+
+    //starting DLL
+    public class Node {
+        int val;
+        Node prev;
+        Node next;
+        Node(int val){
+            this.val=val;
+        }
+        Node(int val,Node prev,Node next){
+            this.val=val;
+            this.prev=prev;
+            this.next=next;
+        }
+    }
+    Node head,tail;
+    int size;
+    TreeMap<Integer,ArrayList<Node>> tree;
+    public MaxStack() {
+        tree=new TreeMap<>();
+        head=new Node(-1);
+        tail=new Node(-1);
+        head.next=tail;
+        tail.prev=head;
+        size=0;
+    }
+
+    /*
+     * @param number: An integer
+     * @return: nothing
+     */    
+    public void push(int x) {
+        Node curr=new Node(x,tail.prev,tail); 
+
+        //adding in DLL
+        tail.prev.next=curr;
+        tail.prev=curr;
+
+        //altering treeMap 
+        if(tree.containsKey(x)==false){  
+            tree.put(x,new ArrayList<>());
+        }
+
+        //pushing to last of arrayList 
+        tree.get(x).add(curr);
+        size++;
+    }
+
+    public int pop() {
+        if(size==0) return -1;
+
+        //deataching node
+        Node curr=tail.prev;
+        curr.prev.next=curr.next;
+        curr.next.prev=curr.prev;
+
+        //Altering treemap if(al.size()==0) removeLastIdx else remove From tree
+        ArrayList<Node> arr=tree.get(curr.val);
+        arr.remove(arr.size()-1);
+        if(arr.size()==0){
+            tree.remove(curr.val);
+        }else{
+            tree.put(curr.val,arr);   //not required as in line 60 we altered at address
+        }
+        size--;
+        return curr.val;
+    }
+
+    /*
+     * @return: An integer
+     */    
+    public int top() {
+        if(size==0) return -1;
+        return tail.prev.val;
+    }
+
+    /*
+     * @return: An integer
+     */    
+    public int peekMax() {
+        if(size==0) return -1;
+        return tree.lastKey();
+    }
+
+    public int popMax() {
+        if(size==0) return -1;
+        int maxKey=peekMax();
+        ArrayList<Node> arr=tree.get(maxKey);
+        Node lastNode=arr.get(arr.size()-1);
+
+        //removing node in DLL
+        lastNode.prev.next=lastNode.next;
+        lastNode.next.prev=lastNode.prev;
+
+        //altering treeMap
+        arr.remove(arr.size()-1);
+        if(arr.size()==0) tree.remove(lastNode.val);
+        else tree.put(lastNode.val,arr);
+        size--;
+        return lastNode.val;
+    }
+}

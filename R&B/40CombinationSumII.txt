@@ -1,0 +1,43 @@
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        ArrayList<Integer> al=new ArrayList<>();
+        for(int i=0;i<candidates.length;i++){
+            int ele=candidates[i];
+            if(hm.containsKey(ele)){
+                hm.put(ele,hm.get(ele)+1);
+            }else{
+                hm.put(ele,1);
+                al.add(ele);
+            }
+        }
+        List<Integer> combination=new ArrayList<>();
+        List<List<Integer>> combinations=new ArrayList<>();
+        helper(0,target,al,hm,combination,combinations);
+        return combinations;
+    }
+    public void helper(int idx,int target,ArrayList<Integer> al,HashMap<Integer,Integer> hm,List<Integer> combination,List<List<Integer>> combinations){
+        if(target==0){
+            List<Integer> copy=new ArrayList<>(combination);
+            combinations.add(copy);
+            return;
+        }
+        if(idx==al.size() ){
+            return;
+        }
+        int ele=al.get(idx);
+        int val=hm.get(ele);
+        for(int i=0;i<=val;i++){
+            int newVal=ele*i;
+            if(target-newVal>=0){ //pruning
+                for(int j=1;j<=i;j++){
+                combination.add(ele);
+                }
+                helper(idx+1,target-newVal,al,hm,combination,combinations);
+                for(int j=1;j<=i;j++){
+                    combination.remove(combination.size()-1);
+                }
+            } 
+        }
+    }
+}

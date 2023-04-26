@@ -1,0 +1,48 @@
+/**
+ * Definition of Interval:
+ * public class Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this.start = start;
+ *         this.end = end;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param intervals: an array of meeting time intervals
+     * @return: the minimum number of conference rooms required
+     */
+    public int minMeetingRooms(List<Interval> intervals) {
+        // Write your code here
+        ArrayList<Integer> start=new ArrayList<>();
+        ArrayList<Integer> end=new ArrayList<>();
+        for(int i=0;i<intervals.size();i++){
+            Interval curr=intervals.get(i);
+            start.add(curr.start);
+            end.add(curr.end);
+        }
+        Collections.sort(start);
+        Collections.sort(end);
+        int startingIdx=0,endingIdx=0;
+        int maxRooms=0,currRooms=0;
+        while(startingIdx<start.size()){  //two pointers 
+            if(start.get(startingIdx)<end.get(endingIdx)){
+                startingIdx++;
+                currRooms++;
+            }else if(start.get(startingIdx)>end.get(endingIdx)){
+                endingIdx++;
+                currRooms--;
+            }
+            else{
+                endingIdx++;
+                startingIdx++;
+            }
+            if(currRooms>maxRooms){
+                maxRooms=currRooms;
+            }
+        }
+        return maxRooms;
+    }
+}

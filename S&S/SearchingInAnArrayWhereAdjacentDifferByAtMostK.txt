@@ -1,0 +1,22 @@
+class Complete{
+    
+   
+    // Function for finding maximum and value pair
+    public static int search (int arr[], int n, int x, int k) {
+        //Complete the function
+        int i=0;
+        int jump;
+        while(i<n){
+            if(arr[i]==x){
+                return i;  //checking if curr==target
+            }
+            jump=Math.abs(x-arr[i])/k;   //total jumps;
+            if(jump==0){
+                jump=1;
+            }
+            i=i+jump;   //jumps
+        }
+        return -1;  //default case
+    }
+    
+}

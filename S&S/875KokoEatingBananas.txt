@@ -1,0 +1,46 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int low=1;
+        int high=0;
+        for(int i:piles){
+            if(high<i){
+                high=i;
+            }
+        }
+        int min=-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(isPossible(piles,mid,h)==true){
+                min=mid;
+                high=mid-1;
+            }else{
+                low=mid+1;
+            }
+        }
+        return min;
+    }
+    public boolean isPossible(int[] piles,int speed,int hours){
+        int currHours=0;
+        
+        if(speed == 1){
+            long sumOfArray=0;
+            for(int banana:piles){
+                sumOfArray+=banana;
+            }
+            if(sumOfArray <= hours){
+                return true;
+            }
+            return false;
+        }
+        for(int banana:piles){
+            currHours += banana / speed;
+            if(banana % speed != 0){
+                currHours++;
+            }
+        }
+        if(currHours <= hours){
+            return true;
+        }
+        return false;
+    }
+}

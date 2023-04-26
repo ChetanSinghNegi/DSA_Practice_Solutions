@@ -1,0 +1,23 @@
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<inorder.length;i++){
+            hm.put(inorder[i],i);
+        }
+        TreeNode root=dfs(preorder,hm,0,preorder.length-1,0);
+        return root;
+    }
+    public TreeNode dfs(int[] preorder,HashMap<Integer,Integer> hm,int inStIdx,int inEndIdx,
+    int preIdx){
+        if(inStIdx>inEndIdx) return null;
+
+        int currVal=preorder[preIdx];
+        int inIdx=hm.get(currVal);
+        TreeNode currNode=new TreeNode(currVal);  
+
+        currNode.left=dfs(preorder,hm,inStIdx,inIdx-1,preIdx+1); 
+        currNode.right=dfs(preorder,hm,inIdx+1,inEndIdx,preIdx+(inIdx-inStIdx)+1);
+        
+        return currNode;
+    }
+}

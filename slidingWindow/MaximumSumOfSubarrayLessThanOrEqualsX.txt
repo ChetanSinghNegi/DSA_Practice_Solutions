@@ -1,0 +1,21 @@
+class Solution
+{
+    long findMaxSubarraySum(long nums[], int N,int target)
+    {
+        // Your code goes here
+        long maxLength=Integer.MIN_VALUE;
+        int left=0,right=0;
+        long currSum=0;
+        while(right<N){
+            currSum+=nums[right];
+            while(currSum>target){
+                currSum-=nums[left];
+                left++;
+            }
+            maxLength=Math.max(maxLength,currSum);
+            right++;
+        }
+        if(maxLength==Integer.MIN_VALUE) return 0;
+        return maxLength;
+    }
+}

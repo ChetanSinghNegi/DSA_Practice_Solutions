@@ -1,0 +1,38 @@
+class Solution {
+    int totalSum;
+    long maxProductVal;
+    public int maxProduct(TreeNode root) {
+        maxProductVal=0;
+        totalSum=sumTree(root);
+        helper(root);
+        return (int)(maxProductVal % 1000000007l);
+    }
+
+    // changing tree to sumTree
+    public int sumTree(TreeNode root){
+        if(root==null) return 0;
+        int lSum=sumTree(root.left);
+        int rSum=sumTree(root.right);
+        root.val=lSum+rSum+root.val;
+        return root.val;
+    }
+
+    public void helper(TreeNode root){
+        if(root==null) return;
+
+        helper(root.left);
+        helper(root.right);
+        
+        //finding leftTree vs whole Tree(except leftTree) 
+        long leftSumTree=root.left==null? 0l :root.left.val;
+        long lRes=leftSumTree*(totalSum-leftSumTree);
+
+        //finding rightTree vs whole Tree(except rightTree) 
+        long rightSumTree=root.right==null? 0l :root.right.val;
+        long rRes=rightSumTree*(totalSum-rightSumTree);
+
+        //finding maxOfAll
+        maxProductVal=Math.max(maxProductVal,Math.max(lRes,rRes));
+        
+    }
+}

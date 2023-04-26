@@ -1,0 +1,33 @@
+import java.util.*;
+
+public class Main {
+
+	public static int solution(String s) {
+		// write your code here
+		int count=0;
+        int left=0,right=0;
+        HashMap<Character,Integer> hm=new HashMap<>();
+        while(right<s.length()){
+            char currChar=s.charAt(right);
+            if(hm.containsKey(currChar)==true){
+                while(left<=right && s.charAt(left)!=currChar){
+                    hm.remove(s.charAt(left));
+                    left++;
+                }
+                hm.remove(currChar);
+                left++;
+            }
+            hm.put(currChar,1);
+            count+=right-left+1;
+            right++;
+        }
+        return count;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		String str = scn.next();
+		System.out.println(solution(str));
+	}
+
+}

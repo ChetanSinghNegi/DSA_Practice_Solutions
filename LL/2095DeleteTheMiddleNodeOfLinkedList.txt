@@ -1,0 +1,50 @@
+//Using concept of mid of LinkedList so O(logn)
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if(head==null || head.next==null) return null;
+        ListNode slow=head;
+        ListNode fast=head;
+        while(fast.next.next!=null && fast.next.next.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+        }
+        slow.next=slow.next.next;
+        return head;
+    }
+}
+
+
+
+//   Method by the use of size so O(n)
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if(head==null || head.next==null){
+            return null;
+        }
+        ListNode temp=head;
+        int size=0;
+        while(temp!=null){
+            temp=temp.next;
+            size++;
+        }
+        int mid=size/2;
+        temp=head;
+        for(int i=0;i<mid-1;i++){
+            temp=temp.next;
+        }
+        temp.next=temp.next.next;
+        
+        // testing
+        // ListNode hello=head;
+        // while(hello!=null){
+        //     hello.val=2;
+        //     hello=hello.next;
+        // }
+        // ListNode bello=head;
+        // while(bello!=null){
+        //     System.out.print(bello.val+"  ");
+        //     bello=bello.next;
+        // }
+        return head;
+    }
+}

@@ -1,0 +1,34 @@
+class Solution {
+    int rowWithMax1s(int arr[][], int n, int m) {
+        // code here
+        int ans=-1;
+        int currCount=Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            int currVal=BS(i,arr);
+            if(currVal==-1){
+                continue;
+            }
+            if(currVal<currCount){
+                currCount=currVal;
+                ans=i;
+            }
+        }
+        return ans;
+    }
+    int BS(int i,int[][] arr){
+        int l=0;
+        int r=arr[0].length-1;
+        int ans=-1;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            int currEle=arr[i][mid];
+            if(currEle<1){
+                l=mid+1;
+            }else {
+                ans=mid;
+                r=mid-1;
+            }
+        }
+        return ans;
+    }
+}

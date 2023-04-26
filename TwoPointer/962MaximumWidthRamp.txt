@@ -1,0 +1,25 @@
+class Solution {
+    public int maxWidthRamp(int[] nums) {
+        int n=nums.length;
+        int max=Integer.MIN_VALUE;
+        int[] suffixMaxArray=new int[n];
+        for(int i=n-1;i>=0;i--){
+            if(nums[i]>max){
+                max=nums[i];
+            }
+            suffixMaxArray[i]=max;
+        }
+        int i=0,j=i+1;
+        int maxDiff=0;
+        while(i<n && j<n){
+            while(j<n && nums[i]<=suffixMaxArray[j]){
+                j++;
+            }
+            if(j-i-1>maxDiff){
+                maxDiff=j-i-1;
+            }
+            i++;
+        }
+        return maxDiff;
+    }
+}

@@ -1,0 +1,18 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans=new ArrayList<>();
+        helper(n,n,"",ans);
+        return ans;
+    }
+    public void helper(int openingCount,int closingCount,String str,List<String> ans){
+        if(closingCount==0 && openingCount==0){
+            ans.add(str);
+            return;
+        }
+        if(closingCount<openingCount || openingCount<0 || closingCount<0){
+            return;
+        }
+        helper(openingCount-1,closingCount,str+"(",ans);
+        helper(openingCount,closingCount-1,str+")",ans);
+    }
+}

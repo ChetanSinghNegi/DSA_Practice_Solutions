@@ -1,0 +1,35 @@
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> st=new Stack<>();
+        int n=asteroids.length;
+        for(int i=0;i<n;i++){
+            int ele=asteroids[i];
+
+            if(ele>0) st.push(ele);   //positive directly pushed
+            else{                     //negative case is handled
+                if(st.size()==0) st.push(ele);  // stack empty pushed
+                else{
+
+                    //till bigger negative can destroy smaller positive
+                    while(st.size()>0 && st.peek()>0 && st.peek()<Math.abs(ele)){
+                        st.pop();
+                    }
+
+                    if(st.size()>0){
+                        if(st.peek()==Math.abs(ele)) st.pop();   //both collides and gone
+                        else if(st.peek()<0) st.push(ele);       //peek is also negative
+                        else continue;                           //peek destroyed negative
+                    }else { 
+                        st.push(ele);                            //free-space so pushed
+                    }
+                }
+            }
+        }
+        int[] ans=new int[st.size()];
+        int i=ans.length-1;
+        while(st.size()>0){
+            ans[i--]=st.pop();
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,25 @@
+class Solution {
+    static int tPaths;
+    public int uniquePaths(int m, int n) {
+        int [][] count=new int[m][n];
+        int tPaths=helper(0,0,m,n,count);
+        return tPaths;
+    }
+    public int helper(int sr,int sc,int dr,int dc,int[][] count){
+        if(sr==dr || sc==dc ){
+            return 0;
+        }
+        if(sr==dr-1 && sc==dc-1){
+            return 1;
+        }
+        if(count[sr][sc]!=0){
+            return count[sr][sc];
+        }
+        int currTPaths=0;
+        int x=helper(sr+1,sc,dr,dc,count);
+        int y=helper(sr,sc+1,dr,dc,count);
+        currTPaths+=x+y;
+        count[sr][sc]=currTPaths;
+        return currTPaths;
+    }
+}

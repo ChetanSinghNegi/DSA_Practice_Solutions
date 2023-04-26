@@ -1,0 +1,36 @@
+class solve {
+    // Function to determine if graph can be coloured with at most M colours
+    // such
+    // that no two adjacent vertices of graph are coloured with same colour.
+
+    public boolean graphColoring(boolean graph[][], int m, int n) {
+        // Your code here
+        int[] colorGraph =new int[n];
+        Arrays.fill(colorGraph,-1);
+        return helper(0,graph,colorGraph,m,n);
+        
+    }
+    
+    public boolean helper(int src,boolean graph[][], int[] colorGraph, int color,int n){
+        if(src==n) return true;
+        
+        for(int i=1;i<=color;i++){
+            boolean isPossible=check(src,i,graph,colorGraph,n);
+            if(isPossible==true) {
+                colorGraph[src]=i;
+                if(helper(src+1,graph,colorGraph,color,n) == true) return true;
+                colorGraph[src]=-1;
+            }
+        } 
+        return false;
+    }
+    public boolean check(int src, int c,boolean graph[][], int[] colorGraph, int n){
+        for(int i=0;i<n;i++){
+            if(graph[src][i]==true && colorGraph[i]==c){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+}

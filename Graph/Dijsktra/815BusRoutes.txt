@@ -1,0 +1,58 @@
+class Solution {
+    public class Pair implements Comparable<Pair>{
+        int stopName,stopColor,stopChangesReq;
+
+        Pair(int a,int b,int c){
+            stopName=a;
+            stopColor=b;
+            stopChangesReq=c;
+        }
+        
+        public int compareTo(Pair o){
+            return this.stopChangesReq - o.stopChangesReq;
+        }
+    }
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        int n=0;
+        for(int[] route:routes){
+            for(int node:route){
+                n=Math.max(n,node);
+            }
+        }
+
+        ArrayList<Pair>[] graph=new ArrayList[n+1];
+        for(int i=0;i<=n;i++) graph[i]=new ArrayList<>();
+
+        for(int i=0;i<routes.length;i++){
+            for(int j=0;j<routes[i].length;j++){
+                int src=routes[i][j];
+                int dest=routes[i][(j+1)%routes[i].length];
+                graph[src].add(new Pair(dest,i,0));
+                graph[dest].add(new Pair(src,i,0));
+            }
+        }
+
+        PriorityQueue<Pair> pq=new PriorityQueue<>();
+        pq.add(new Pair(source,routes.length,0));
+        int[][] vis=new int[n + 1][routes.length + 1];
+        for(int[] arr:vis){
+            Arrays.fill(arr,-1);
+        }
+
+        while(pq.size()>0){
+            Pair rem=pq.remove();
+            if(rem.stopName==target) return rem.stopChangesReq;
+            if(vis[rem.stopName][rem.stopColor]!=-1) continue;
+            vis[rem.stopName][rem.stopColor]=rem.stopChangesReq;
+            for(Pair nbr:graph[rem.stopName]){
+                if(rem.stopColor == nbr.stopColor){
+                    pq.add(new Pair(nbr.stopName,rem.stopColor,rem.stopChangesReq));
+                }else{
+                    pq.add(new Pair(nbr.stopName,nbr.stopColor,rem.stopChangesReq + 1));
+                }
+            }
+        }
+        return -1;
+
+    }
+}

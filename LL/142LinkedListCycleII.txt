@@ -1,0 +1,44 @@
+//*****************Extra space Used(Not Optimal Approach)***************//
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow=head;
+        ListNode fast=head;
+        HashSet<ListNode> hm=new HashSet<>();
+        while(fast!=null && fast.next!=null){
+            if(hm.contains(slow)==true){
+                return slow;
+            }else{
+                hm.add(slow);
+            }
+            fast=fast.next.next;
+            slow=slow.next;
+        }
+        return null;
+
+    }
+}
+
+
+//*****************No space Used(Optimal approach)***************//
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow=head;
+        ListNode fast=head;
+        while(fast!=null && fast.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+            if(slow==fast) break;
+        }
+        if(fast==null ||  fast.next==null) { // no cycle
+            return null; 
+        }
+        ListNode temp=head;
+        while(temp!=slow){
+            temp=temp.next;
+            slow=slow.next;
+        }
+        return slow;
+
+    }
+}

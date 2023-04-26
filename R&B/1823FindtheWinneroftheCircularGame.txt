@@ -1,0 +1,42 @@
+//O(n*k)
+class Solution {
+    public int findTheWinner(int n, int k) {
+        Queue<Integer> q=new ArrayDeque<>();
+        for(int i=1;i<=n;i++){
+            q.add(i);
+        }
+        helper(q,k);
+        return q.remove();
+    }
+    public void helper(Queue<Integer> q,int k){ 
+        //TimeComplexity=O(n*k)
+        if(q.size()==1){
+            return;
+        }
+        for(int i=1;i<k;i++){
+            int rem=q.remove();
+            q.add(rem);
+        }
+        q.remove();
+        helper(q,k);
+    }
+}
+
+
+//O(n)
+class Solution {
+    public int findTheWinner(int n, int k) {
+        int ans=helper(n,k);
+        return ans+1;
+    }
+    public int helper(int n,int k){
+        if(n==1){
+            return 0;
+        }
+        int preAnsIdx=helper(n-1,k);
+        int currAnsIdx=(preAnsIdx+k)%n;
+        return currAnsIdx;
+
+    }
+
+}

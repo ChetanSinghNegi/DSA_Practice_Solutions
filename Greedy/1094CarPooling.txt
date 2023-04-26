@@ -1,0 +1,78 @@
+//by treeMap
+
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        TreeMap<Integer,Integer> changes=new TreeMap<>();
+        for(int i=0;i<trips.length;i++){  //O(nlogn)
+            int passengers=trips[i][0];
+            int start=trips[i][1];
+            int end=trips[i][2];
+
+            changes.put(start,changes.getOrDefault(start,0) + passengers); //O(logn)
+            changes.put(end,changes.getOrDefault(end,0) - passengers);     //O(logn)
+
+        }
+        int currPassengers=0;
+        for(Integer key:changes.keySet()){
+            Integer val=changes.get(key);
+            currPassengers+=val;
+            if(currPassengers>capacity){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+//by normal comparator
+
+
+class Solution {
+
+    public class pair{
+        int point;
+        int cap;
+        pair(int point,int cap){
+            this.point=point;
+            this.cap=cap;
+        }
+    }
+
+    public static class myComp implements Comparator<pair> {
+         public int compare(pair i1,pair i2){
+            return i1.point-i2.point;
+         }
+     }
+    public boolean carPooling(int[][] trips, int capacity) {
+        ArrayList<pair> sd=new ArrayList<>();
+        ArrayList<pair> ed=new ArrayList<>();
+        for(int i=0;i<trips.length;i++){
+            sd.add(new pair(trips[i][1],trips[i][0]));
+            ed.add(new pair(trips[i][2],trips[i][0]));
+        }
+        Collections.sort(sd,new myComp());
+        Collections.sort(ed,new myComp());
+        int stIdx=0,edIdx=0;
+        int currCap=0;
+        while(stIdx<trips.length){
+            pair s1=sd.get(stIdx);
+            pair s2=ed.get(edIdx);
+            if(s1.point<s2.point){
+                stIdx++;
+                currCap+=s1.cap;
+            }else if(s1.point>s2.point){
+                edIdx++;
+                currCap-=s2.cap;
+            }else{
+                edIdx++;
+                stIdx++;
+                currCap+=s1.cap;
+                currCap-=s2.cap;
+            }
+            if(currCap>capacity){
+                return false;
+            }
+        }
+        return true;
+    }
+}

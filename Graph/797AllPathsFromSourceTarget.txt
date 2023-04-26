@@ -1,0 +1,33 @@
+class Solution {
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        List<List<Integer>> paths=new ArrayList<>();
+        List<Integer> path=new ArrayList<>();
+        boolean[] dp=new boolean[graph.length];
+        DFS(graph,dp,0,graph.length-1,path,paths);
+        return paths;
+    }
+    public void DFS(int[][] graph,boolean[] dp,int src,int dest,List<Integer> path,List<List<Integer>> paths){
+        if(dp[src]==true) return;
+        
+        //positive base case
+        if(src==dest){
+            path.add(src);
+            paths.add(new ArrayList<>(path));
+            path.remove(path.size()-1);
+            return;
+        }
+
+        path.add(src);
+        dp[src]=true;
+
+        //child calls
+        for(int child:graph[src]){
+            DFS(graph,dp,child,dest,path,paths);
+        }
+
+        //backTrack
+        dp[src]=false;
+        path.remove(path.size()-1);
+        return;
+    }
+}

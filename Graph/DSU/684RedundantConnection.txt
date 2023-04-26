@@ -1,0 +1,53 @@
+class Solution {
+
+    public class DSU{
+        int[] parent;
+        int[] ranks;
+        
+        DSU(int n){
+            parent=new int[n];
+            ranks=new int[n];
+            Arrays.fill(parent,-1);
+            Arrays.fill(ranks,1);
+        }
+        
+        int find(int ele){
+            if(parent[ele]==-1) return ele;
+            return parent[ele] = find(parent[ele]); 
+        }
+        void union(int ele1, int ele2){
+            int p1=find(ele1);
+            int p2=find(ele2);
+            if(p1==p2) return ;
+            
+            if(ranks[p1] > ranks[p2]){
+                parent[p2] = p1;
+                ranks[p1] += ranks[p2];
+            }else{
+                parent[p1] = p2;
+                ranks[p2] += ranks[p1];
+            }
+            return;
+        }
+    }
+
+    public int[] findRedundantConnection(int[][] edges) {
+        int[] ans=new int[2];
+        int n = edges.length;
+        DSU set = new DSU(n + 1);
+        for(int i=0;i<n;i++){
+            int ele1 = edges[i][0];
+            int ele2 = edges[i][1];
+
+            //cycle found
+            if(set.find(ele1) == set.find(ele2)){  
+                ans[0] = ele1;
+                ans[1] = ele2;
+                return ans;
+            }
+            
+            set.union(ele1, ele2);
+        }
+        return ans;
+    }
+}

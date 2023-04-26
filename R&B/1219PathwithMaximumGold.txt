@@ -1,0 +1,32 @@
+class Solution {
+    public int getMaximumGold(int[][] grid) {
+        int maxGold=0;
+        int[] x={-1,0,1,0};
+        int[] y={0,1,0,-1};
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                int gold=helper(i,j,x,y,grid);
+                if(gold>maxGold){
+                    maxGold=gold;
+                }
+            }
+        }
+        return maxGold;
+    }
+    public int helper(int sr,int sc,int[] x,int [] y,int[][] grid){
+        if(sr<0 || sc<0 || sr==grid.length ||sc==grid[0].length ||grid[sr][sc]==-1 || grid[sr][sc]==0){
+        return 0;
+    }
+    int temp=grid[sr][sc];
+    grid[sr][sc]=-1;
+    int childMaxGold=0;
+    for(int i=0;i<x.length;i++){
+        int gold=helper(sr+x[i],sc+y[i],x,y,grid);
+        if(childMaxGold<gold){
+            childMaxGold=gold;
+        }
+    }
+    grid[sr][sc]=temp;
+    return temp+childMaxGold;
+}
+}

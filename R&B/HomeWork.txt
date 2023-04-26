@@ -1,0 +1,6 @@
+https://leetcode.com/problems/unique-paths/description/  
+done
+
+https://www.geeksforgeeks.org/longest-possible-route-in-a-matrix-with-hurdles/  
+done
+to be solved in leetcode

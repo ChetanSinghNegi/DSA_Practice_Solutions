@@ -1,0 +1,37 @@
+class Solution {
+    public int numSubarrayBoundedMax(int[] arr, int left, int right) {
+        long leftSubArrayCount=countSubarray(arr,left);
+        long rightSubArrayCount=countSubarray(arr,right+1);
+        return (int)leftSubArrayCount-(int)rightSubArrayCount;
+    }
+    public long countSubarray(int arr[], int k) {
+        int n=arr.length;
+        int idx=0;
+        long gCount=0;
+        while(idx<n){
+            if(arr[idx]>=k){
+                idx++;
+                continue;
+            }else{
+                int count=0;
+                while(idx<n && arr[idx]<k){
+                    count++;
+                    idx++;
+                }  
+                // finding subArray Count which is having max smaller than k (count*count+1)/2 doing below calculation to avoid outOfBound int size error 
+                long fst=count%2==0?count/2:count;
+                long snd=(count+1)%2==0?(count+1)/2:count+1;
+                long subCount=fst*snd;
+                gCount+=subCount;
+            }
+        }
+        //finding total subarray count
+        long fst=n%2==0?n/2:n;
+        long snd=(n+1)%2==0?(n+1)/2:n+1;
+        long tSubarray=fst*snd;
+        //substracting total subarrays to MAX till <=k  ....
+        //so we will get subarrays max >k
+        long ans=tSubarray-gCount;
+        return ans;
+    }
+}

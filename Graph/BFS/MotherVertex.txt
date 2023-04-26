@@ -1,0 +1,33 @@
+class Solution
+{
+    //Function to find a Mother Vertex in the Graph.
+    int idx;
+    int[] tSort;
+    int count;
+    public int findMotherVertex(int V, ArrayList<ArrayList<Integer>>adj)
+    {
+        // Code here
+        idx=V-1;
+        count=0;
+        tSort=new int[V];
+        boolean[] vis=new boolean[V];
+        for(int i=0;i<adj.size();i++){
+            DFS(i,adj,vis,false);
+        }
+        Arrays.fill(vis,false);
+        DFS(tSort[0],adj,vis,true);
+        if(count==V) return tSort[0];
+        return -1;
+        
+    }
+    
+    public void DFS(int src, ArrayList<ArrayList<Integer>>adj, boolean[] vis, boolean vertexDFS){
+        if(vis[src]==true) return;
+        
+        vis[src]=true;
+        for(int nbr:adj.get(src)) DFS(nbr,adj,vis,vertexDFS);
+        if(vertexDFS==false) tSort[idx--]=src;
+        else count++;
+        
+    }
+}

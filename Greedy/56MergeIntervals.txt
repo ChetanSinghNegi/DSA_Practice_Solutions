@@ -1,0 +1,23 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,(a,b)->a[0]-b[0]);  //lambda expression
+        Stack<int[]> st=new Stack<>();
+        st.push(intervals[0]);
+        for(int i=1;i<intervals.length;i++){
+            int[] currInterval=intervals[i];
+            int[] top=st.peek();
+            if(top[1]>=currInterval[0]){
+                st.pop();
+                top[1]=Math.max(top[1],currInterval[1]);
+                st.push(top);
+            }else{
+                st.push(currInterval);
+            }
+        }
+        int[][] ans=new int[st.size()][2];
+        for(int i=0;i<ans.length;i++){
+            ans[i]=st.pop();
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,26 @@
+class Solution {
+    public int[] mostCompetitive(int[] nums, int k) {
+
+        //can use stack also but maintaining same pattern to solve similar probs
+        Deque<Integer> dq=new ArrayDeque<>();
+        int[] ans=new int[k];
+        k=nums.length-k;
+        for(int i=0;i<nums.length;i++){
+            int ele=nums[i];
+            while(dq.size()>0 && k>0 && dq.getLast()>ele){
+                dq.removeLast();
+                k--;
+            }
+            if(nums.length - i == k){
+                k--;
+                continue;
+            }
+            dq.addLast(ele);
+        }
+        for(int i=ans.length-1;i>=0;i--){
+            ans[i]=dq.getLast();
+            dq.removeLast();
+        }
+        return ans;
+    }
+}

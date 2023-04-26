@@ -1,0 +1,18 @@
+public class Solution {
+     TreeNode succ;
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        // write your code here
+        succ=null;
+        helper(root,p);
+        return succ;
+    }
+    public void helper(TreeNode root,TreeNode p){
+        if(root==null) return ;
+
+        if(root.val>p.val ){
+            succ=root;
+        }
+        if(root.val<=p.val) helper(root.right,p);
+        else helper(root.left,p);
+    }
+}

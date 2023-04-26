@@ -1,0 +1,47 @@
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    
+    public class DSU{
+        int[] parent;
+        int[] ranks;
+        
+        DSU(int n){
+            parent=new int[n];
+            ranks=new int[n];
+            Arrays.fill(parent,-1);
+            Arrays.fill(ranks,1);
+        }
+        
+        int find(int ele){
+            if(parent[ele]==-1) return ele;
+            return parent[ele] = find(parent[ele]); 
+        }
+        void union(int ele1, int ele2){
+            int p1=find(ele1);
+            int p2=find(ele2);
+            if(p1==p2) return ;
+            
+            if(ranks[p1] > ranks[p2]){
+                parent[p2] = p1;
+                ranks[p1] += ranks[p2];
+            }else{
+                parent[p1] = p2;
+                ranks[p2] += ranks[p1];
+            }
+            return;
+        }
+    }
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        
+        DSU set=new DSU(V);
+        for(int ele1=0;ele1<adj.size();ele1++){
+            for(int ele2:adj.get(ele1)){
+                if(ele1 > ele2) continue;
+                if(set.find(ele1) == set.find(ele2)) return true;
+                set.union(ele1,ele2);
+            }
+        }
+        return false;
+    }
+}

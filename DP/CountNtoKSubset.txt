@@ -1,0 +1,30 @@
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+
+public class Main{
+	public static void main (String[] args) {
+	    Scanner sc = new Scanner(System.in);
+		System.out.println("GfG!");
+		System.out.println("Enter n");
+		int n= sc.nextInt();
+		System.out.println("Enter k");
+		int k = sc.nextInt();
+		int[][] dp = new int[n + 1][k + 1];
+		for(int i = 0; i <= n; i++){
+		    Arrays.fill(dp[i],-1);
+		}
+		System.out.println(helper(n,k,dp));
+	}
+	public static int helper(int n, int k, int[][] dp){
+	    if(n < k || n == 0 || k == 0) return 0;
+	    if(n == k) return 1;
+	    
+	    if(dp[n][k] != -1) return dp[n][k];
+	    
+	    int ans1 = helper(n - 1,k,dp);
+	    int ans2 = helper(n - 1, k - 1, dp);
+	    dp[n][k] = ans1 * k + ans2;
+	    return dp[n][k];
+	}
+}

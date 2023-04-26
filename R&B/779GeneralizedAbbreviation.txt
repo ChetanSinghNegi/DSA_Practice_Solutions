@@ -1,0 +1,29 @@
+public class Solution {
+    /**
+     * @param word: the given word
+     * @return: the generalized abbreviations of a word
+     *          we will sort your return value in output
+     */
+    public List<String> generateAbbreviations(String word) {
+        // Write your code here
+        List<String> ans=new ArrayList<>();
+        helper(word,0,0,"",ans);
+        return ans;
+    }
+    public void helper(String word,int idx,int count,String currAns,List<String> ans){
+        if(idx==word.length()){
+            if(count!=0){
+                currAns+=count;
+            }
+            ans.add(currAns);
+            return;
+        }
+        if(count!=0){
+            helper(word,idx+1,count+1,currAns,ans);
+            helper(word,idx+1,0,currAns+count+word.charAt(idx),ans);
+        }else{
+            helper(word,idx+1,1,currAns,ans);
+            helper(word,idx+1,0,currAns+word.charAt(idx),ans);  
+        }
+    }
+}

@@ -1,0 +1,80 @@
+//tabulation
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp,Integer.MAX_VALUE);
+        dp[0] = 0;
+        for(int i=1; i<= amount; i++){
+            for(int j=0; j<coins.length; j++){
+                if(i - coins[j] >= 0 && dp[i - coins[j]] != Integer.MAX_VALUE){
+                    dp[i] = Math.min(dp[i],dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        if(dp[amount] == Integer.MAX_VALUE) return -1;
+        return dp[amount];
+    }
+}
+
+//amount on level
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        if( amount == 0) return 0;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, -1);
+        helper(amount, coins, dp);
+        if(dp[amount] == Integer.MAX_VALUE) return -1;
+        return dp[amount];
+    }
+
+    public int helper(int amount, int[] coins, int[] dp){
+        if(amount == 0) return 0;
+        if(amount < 0) return Integer.MAX_VALUE;
+
+        if(dp[amount] != -1) return dp[amount];
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i<coins.length; i++){
+            if(amount - coins[i] >= 0){
+                min = Math.min(min, helper(amount - coins[i], coins, dp));
+            }
+        }
+        if(min != Integer.MAX_VALUE){
+            min++;
+        }
+        dp[amount] = min;
+        return min ;
+    }
+}
+
+//coins on level
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        if( amount == 0) return 0;
+        int[][] dp = new int[amount + 1][coins.length];
+        for(int i=0; i <= amount; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        int ans = helper(amount, 0, coins, dp);
+        if(ans == Integer.MAX_VALUE) return -1;
+        return ans;
+    }
+
+    public int helper(int amount, int idx, int[] coins, int[][] dp){
+        if(amount == 0) return 0;
+        if(idx == coins.length){
+            return Integer.MAX_VALUE;
+        }
+
+        if(dp[amount][idx] != -1) return dp[amount][idx];
+        int min = Integer.MAX_VALUE;
+        for(int times = 0; amount - coins[idx] * times >=0 ;times++){
+            int currCoins = helper(amount - coins[idx] * times, idx + 1, coins, dp);
+            if(currCoins != Integer.MAX_VALUE){
+                currCoins += times;
+            }
+            min = Math.min(min, currCoins);
+        }
+        dp[amount][idx] = min;
+        return min ;
+    }
+}

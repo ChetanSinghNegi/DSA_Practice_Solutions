@@ -1,0 +1,30 @@
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root==null) return 0;
+
+        int leftDepth=leftDepthCount(root);
+        int rightDepth=rightDepthCount(root);
+
+        //if its perfect BT so return total nodes as 2^maxDepth-1;
+        if(leftDepth==rightDepth) return (int)Math.pow(2,leftDepth)-1;
+
+        //if not Perfect BT so caculating recursively
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+    public int leftDepthCount(TreeNode root){
+        int count=0;
+        while(root!=null){
+            count++;
+            root=root.left;
+        }
+        return count;
+    }
+    public int rightDepthCount(TreeNode root){
+        int count=0;
+        while(root!=null){
+            count++;
+            root=root.right;
+        }
+        return count;
+    }
+}

@@ -1,0 +1,37 @@
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        String[] vals=preorder.split(",");
+        Stack<Pair> st=new Stack<>();
+        if(vals.length==1 && vals[0].equals("#")==true) return true;  //no nodes corner case
+        if(vals.length==0 || vals[0].equals("#")==true) return false; // corner case
+        st.push(new Pair(Integer.parseInt(vals[0])));
+        int idx=1;
+        while(idx<vals.length && st.size()>0){
+            String currNode=vals[idx];
+            Pair peekP=st.peek();
+            if(currNode.equals("#")==true){
+                peekP.state++;
+                if(peekP.state==2) st.pop();
+            }else{
+                if(peekP.state==0){
+                    peekP.state++;
+                    st.push(new Pair(Integer.parseInt(currNode)));
+                }else{
+                    st.pop();
+                    st.push(new Pair(Integer.parseInt(currNode)));
+                }
+            }
+            idx++;
+        }
+        if(st.size()==0 && idx==vals.length) return true;
+        return false;
+    }
+    public class Pair{
+        int val;
+        int state;
+        Pair(int v){
+            this.val=v;
+            this.state=0;
+        }
+    }
+}

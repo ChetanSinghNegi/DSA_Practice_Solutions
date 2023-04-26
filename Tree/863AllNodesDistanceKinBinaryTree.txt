@@ -1,0 +1,96 @@
+// O(N) S(H + N)  {Recursive space} +  {rootToNode ArrayList Space} 
+
+class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        ArrayList<TreeNode> rootToNode=new ArrayList<>();
+        RootToNode(root,rootToNode,target);
+        List<Integer> ans=new ArrayList<>();
+        for(int i=0;i<rootToNode.size();i++){
+            TreeNode blocker=(i==0)?null:rootToNode.get(i-1);
+            helper(rootToNode.get(i),k,ans,blocker);
+            k--;
+        }
+        return ans;
+    }
+
+    void helper(TreeNode root,int k,List<Integer> ans,TreeNode blocker){
+         if(root==null) return;
+         if(k==0){
+             ans.add(root.val);
+             return;
+         }
+         if(root.left != blocker) helper(root.left,k-1,ans,blocker);
+         if(root.right != blocker) helper(root.right,k-1,ans,blocker);
+         
+     }
+
+    public boolean RootToNode(TreeNode root,ArrayList<TreeNode> al,TreeNode target){
+        if(root==null) return false;
+        if(root==target){
+            al.add(root);
+            return true;
+        }
+        boolean lFound=RootToNode(root.left,al,target);
+        if(lFound==true){
+            al.add(root);
+            return true;
+        }
+        boolean rFound=RootToNode(root.right,al,target);
+        if(rFound==true){
+            al.add(root);
+            return true;
+        }
+        return false;
+
+    }
+}
+
+
+
+// O(n) S(H) Recursive space
+class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        List<Integer> ans=new ArrayList<>();
+        dfs(root,k,ans,target);
+        return ans;
+    }
+
+    void kLevelDown(TreeNode root,int k,List<Integer> ans,TreeNode blocker){
+         if(root==null) return;
+         if(k==0){
+             ans.add(root.val);
+             return;
+         }
+         if(root.left != blocker) kLevelDown(root.left,k-1,ans,blocker);
+         if(root.right != blocker) kLevelDown(root.right,k-1,ans,blocker);
+         
+     }
+
+    public int dfs(TreeNode root,int k,List<Integer> ans,TreeNode target){
+        if(root==null) return -1;
+
+        //if current treeNode is target treenode
+        if(root==target){
+            kLevelDown(root,k,ans,null);
+            return 1;
+        }
+
+        //found on left side
+        int lFound=dfs(root.left,k,ans,target);
+        if(lFound>=0){
+            kLevelDown(root,k-lFound,ans,root.left);
+            return lFound+1;
+        }
+
+        //found on right side
+        int rFound=dfs(root.right,k,ans,target);
+        if(rFound>=0){
+            kLevelDown(root,k-rFound,ans,root.right);
+            return rFound+1;
+        }
+
+        //default
+        return -1;
+
+    }
+}

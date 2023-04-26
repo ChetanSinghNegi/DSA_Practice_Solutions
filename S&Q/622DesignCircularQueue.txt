@@ -1,0 +1,64 @@
+class MyCircularQueue {
+    int[] queue;
+    int size;
+    int capacity;
+    int addingIdx=0;
+    int removingIdx=0;
+    public MyCircularQueue(int k) {
+        capacity=k;
+        queue=new int[capacity];
+        size=0;
+    }
+    
+    public boolean enQueue(int value) {
+        if(isFull()==true) return false;
+        
+        //adding at last but if idx>=capacity so modulus it with capacity
+        queue[addingIdx]=value;
+        addingIdx++;
+        addingIdx%=capacity;
+        size++;
+        return true;
+    }
+    
+    public boolean deQueue() {
+        if(isEmpty()==true) return false;
+        
+        //removing at front  
+        removingIdx++;
+        removingIdx%=capacity;
+        size--;
+        return true;
+    }
+    
+    public int Front() {
+        if(isEmpty()==true) return -1;
+        return queue[removingIdx];
+    }
+    
+    public int Rear() {
+        if(isEmpty()==true) return -1;
+        return addingIdx-1<0?queue[capacity-1]:queue[addingIdx-1];
+    }
+    
+    public boolean isEmpty() {
+        if(size==0) return true;
+        return false;
+    }
+    
+    public boolean isFull() {
+        if(size>=capacity) return true;
+        return false;
+    }
+}
+
+/**
+ * Your MyCircularQueue object will be instantiated and called as such:
+ * MyCircularQueue obj = new MyCircularQueue(k);
+ * boolean param_1 = obj.enQueue(value);
+ * boolean param_2 = obj.deQueue();
+ * int param_3 = obj.Front();
+ * int param_4 = obj.Rear();
+ * boolean param_5 = obj.isEmpty();
+ * boolean param_6 = obj.isFull();
+ */

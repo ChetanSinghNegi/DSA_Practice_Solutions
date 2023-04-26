@@ -1,0 +1,37 @@
+class Solution {
+    public int trap(int[] height) {
+        int n=height.length;
+        int[] lMax=LMax(height);
+        int[] rMax=RMax(height);
+        int maxWater=0;
+        for(int i=0;i<n;i++){
+            int currWater=Math.min(lMax[i],rMax[i])-height[i];
+            maxWater+=currWater;
+            // System.out.print(maxWater+"  " );
+
+        }
+        return maxWater;
+    }
+    public int[] LMax(int[] height){
+        int max=0;
+        int[] lMax=new int[height.length];
+        for(int i=0;i<height.length;i++){
+            if(height[i]>max){
+                max=height[i];
+            }
+            lMax[i]=max;
+        }
+        return lMax;
+    }
+    public int[] RMax(int[] height){
+        int max=0;
+        int[] rMax=new int[height.length];
+        for(int i=height.length-1;i>=0;i--){
+            if(height[i]>max){
+                max=height[i];
+            }
+            rMax[i]=max;
+        }
+        return rMax;
+    }
+}

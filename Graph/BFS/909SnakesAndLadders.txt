@@ -1,0 +1,63 @@
+class Solution {
+    public int snakesAndLadders(int[][] board) {
+        int m=board.length;
+        int n=board[0].length;
+
+        //2D to 1D board
+        ArrayList<Integer> oneD=new ArrayList<>();
+        oneD.add(-1);
+        int cell=1;
+        int level=0;
+        for(int i=m-1;i>=0;i--){
+            if(level%2==0){
+                for(int j=0;j<n;j++){
+                    if(board[i][j]==-1) oneD.add(cell);
+                    else oneD.add(board[i][j]);
+                    cell++;
+                }
+            }else{
+                for(int j=n-1;j>=0;j--){
+                    if(board[i][j]==-1) oneD.add(cell);
+                    else oneD.add(board[i][j]);
+                    cell++;
+                }
+            }
+            level++;
+        }
+
+        //making graph from 1D arraylist
+        ArrayList<Integer>[] graph=new ArrayList[n*m+1];
+        graph[0]=new ArrayList<>();
+        for(int i=1;i<oneD.size();i++){
+            graph[i]=new ArrayList<>();
+            for(int j=1;j<=6 && i+j<oneD.size();j++){
+                graph[i].add(oneD.get(i+j));
+            }
+        }
+
+        return bfs(graph);
+    }
+    public class Pair{
+        int src,dist;
+        Pair(int s,int d){
+            this.src=s;
+            this.dist=d;
+        }
+    }
+    public int bfs(ArrayList<Integer>[] graph){
+        int[] vis=new int[graph.length];
+        Arrays.fill(vis,-1);
+        Queue<Pair> q=new ArrayDeque<>();
+        q.add(new Pair(1,0));
+        while(q.size()>0){
+            Pair rem=q.remove();
+            if(vis[rem.src]!=-1) continue;
+            vis[rem.src]=rem.dist;
+            for(Integer nbr:graph[rem.src]){
+                q.add(new Pair(nbr,rem.dist+1));
+            }
+        }
+        return vis[graph.length-1];
+
+    }
+}

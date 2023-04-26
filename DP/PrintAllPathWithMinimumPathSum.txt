@@ -1,0 +1,41 @@
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int[][] dp = new int[grid.length + 1][grid[0].length + 1];
+        for(int i=0; i <= grid.length; i++){
+            Arrays.fill(dp[i],Integer.MAX_VALUE);
+        }
+        for(int row = grid.length - 1; row >= 0; row--){
+            for(int col = grid[0].length - 1; col >= 0 ; col--){
+                if(row == grid.length - 1 && col == grid[0].length - 1){
+                    dp[row][col] = grid[row][col];
+                    continue;
+                }
+                dp[row][col] = Math.min(dp[row][col + 1], dp[row + 1][col]) + grid[row][col];
+            }
+        }
+
+        helper(0 , 0, "", dp, grid);
+
+        return dp[0][0];
+    }
+    public void helper(int row, int col, String psf, int[][] dp, int[][] grid){
+        if(row == grid.length - 1 && col == grid[0].length - 1){
+            System.out.println(psf + grid[row][col]);
+            return;
+        }
+        if(row > dp.length - 1 && col > dp[0].length - 1){
+            return;
+        }
+
+        int min = Math.min(dp[row][col + 1], dp[row + 1][col]);
+
+        if(min == dp[row][col + 1]){
+            helper(row, col + 1, psf + grid[row][col] +"  ", dp, grid);
+        }
+        if(min == dp[row + 1][col]){
+            helper(row + 1, col, psf + grid[row][col] +"  ", dp, grid);
+        }
+        return;
+    }
+
+}

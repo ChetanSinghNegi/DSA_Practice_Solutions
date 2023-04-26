@@ -1,0 +1,28 @@
+class Solution
+{
+    
+    public static ArrayList<Integer> Ancestors(Node root, int target)
+    {
+        // add your code here
+        ArrayList<Integer> ans=new ArrayList<>();
+        Ancestors(root,ans,target);  //O(n)
+        Collections.reverse(ans);    //O(n)
+        return ans;
+    }
+    public static Boolean Ancestors(Node root,ArrayList<Integer> ans,int target){
+        if(root==null) return false;
+        if(root.data==target) return true;
+        
+        //adding parent 
+        ans.add(root.data);
+        
+        boolean lFound=Ancestors(root.left,ans,target);
+        if(lFound==true) return true;
+        boolean rFound=Ancestors(root.right,ans,target);
+        if(rFound==true) return true;
+        
+        //removing itself
+        ans.remove(ans.size()-1);
+        return false;
+    }
+}

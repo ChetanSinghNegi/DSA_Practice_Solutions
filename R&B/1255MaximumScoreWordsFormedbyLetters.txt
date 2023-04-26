@@ -1,0 +1,36 @@
+class Solution {
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        int[] freq=new int[26];
+        for(char ch:letters){
+            freq[ch-'a']++;
+        }
+        return helper(0,words,freq,score);
+    }
+    public int helper(int idx,String[] words,int[] freq, int[] score){
+        //baseCase
+        if(idx==words.length){
+            return 0;
+        }
+
+        int currScore=0;
+        boolean flag=true;
+        for(char ch:words[idx].toCharArray()){
+            freq[ch-'a']--;
+            if(freq[ch-'a']<0){
+                flag=false;
+            }
+            currScore+=score[ch-'a'];
+        }
+        if(flag==true){
+            currScore+=helper(idx+1,words,freq,score);
+        }else{
+            currScore=0;
+        }
+        for(char ch:words[idx].toCharArray()){
+            freq[ch-'a']++;
+        }
+        int withoutCurrScore=helper(idx+1,words,freq,score);
+        int currMaxScore=Math.max(currScore,withoutCurrScore);
+        return currMaxScore;
+    }
+}

@@ -1,0 +1,52 @@
+class Solution {
+    StringBuilder ans=new StringBuilder("");
+    public String intToRoman(int num) {
+        TreeMap<Integer,String> hm=new TreeMap<>(Collections.reverseOrder());
+        hm.put(1,"I");
+        // hm.add(5,"V");
+        hm.put(10,"X");
+        hm.put(50,"L");
+        hm.put(100,"C");
+        hm.put(500,"D");
+        hm.put(1000,"M");
+        String[] arr={"","I","II","III","IV","V","VI","VII","VIII","IX"};
+        helper(num,arr,hm);
+        return ans.toString();
+    }
+    public void helper(int n, String[] arr, TreeMap<Integer,String> hm){
+        if(n==0) return;
+        int div=0;
+        int divd=0;
+        if(n>39 && n<50){
+            ans.append("XL");
+            helper(n%40,arr,hm);
+            return ;
+        }else if(n>89 && n<100){
+            ans.append("XC");
+            helper(n%90,arr,hm);
+            return ;
+        }
+        if(n>399 && n<500){
+            ans.append("CD");
+            helper(n%400,arr,hm);
+            return ;
+        }else if(n>899 && n<1000){
+            ans.append("CM");
+            helper(n%900,arr,hm);
+            return ;
+        }
+        for(Integer key:hm.keySet()){
+            div=key;
+            divd=n/key;
+            if(divd!=0) break;
+        }
+        if(div!=1){
+            for(int i=0;i<divd;i++){
+                ans.append(hm.get(div));
+            }
+        }else{
+            ans.append(arr[divd]);
+        }
+        helper(n%div,arr,hm);
+    }
+}

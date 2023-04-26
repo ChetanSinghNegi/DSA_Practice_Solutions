@@ -1,0 +1,33 @@
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>(); 
+        if(root==null){
+            return ans;
+        }
+        Stack<TreeNode> odd=new Stack<>();
+        Stack<TreeNode> even=new Stack<>();
+        even.add(root);
+        int lvl=0;
+        while(even.size()>0 || odd.size()>0){
+            List<Integer> al=new ArrayList<>();
+            if(lvl%2==0){
+                while(even.size()>0){
+                    TreeNode curr=even.pop();
+                    al.add(curr.val);
+                    if(curr.left!=null) odd.push(curr.left);    //for even left child first
+                    if(curr.right!=null) odd.push(curr.right);
+                }
+            }else{
+                while(odd.size()>0){
+                    TreeNode curr=odd.pop();
+                    al.add(curr.val);
+                    if(curr.right!=null) even.push(curr.right);  //for odd right child first
+                    if(curr.left!=null) even.push(curr.left);
+                }
+            }
+            lvl++;
+            ans.add(al);
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,36 @@
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int low=1;
+        int high=0;
+        for(int i:nums){
+            if(i>high){
+                high=i;
+            }
+        }
+        int ans=-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(isPossible(nums,threshold,mid)==true){
+                ans=mid;
+                high=mid-1;
+            }else{
+                low=mid+1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int[] nums,int threshold,int mid){
+        int currCount=0;
+        for(int i=0;i<nums.length;i++){
+            int ele=nums[i];
+            currCount+=ele/mid;
+            if(ele%mid!=0){
+                currCount++;
+            }
+        }
+        if(currCount>threshold){
+            return false;
+        }
+        return true;
+    }
+}

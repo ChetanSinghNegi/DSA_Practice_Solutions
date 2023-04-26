@@ -1,0 +1,47 @@
+//recursive
+class Solution {
+    int idx;
+    public TreeNode bstFromPreorder(int[] preorder) {
+        idx=0;
+        TreeNode root=bstDFS(preorder,0,1001);
+        return root;
+    }
+    public TreeNode bstDFS(int[] preOrder,int lr,int rr){
+        if(idx==preOrder.length || preOrder[idx]<lr || preOrder[idx]>rr){
+            return null;
+        }
+
+        TreeNode curr=new TreeNode(preOrder[idx++]);
+        curr.left=bstDFS(preOrder,lr,curr.val);
+        curr.right=bstDFS(preOrder,curr.val,rr);
+        return curr;
+    }
+}
+
+//iterative
+class Solution {
+    public TreeNode bstFromPreorder(int[] preorder) {
+        int n=preorder.length;
+        Stack<TreeNode> st=new Stack<>();
+        TreeNode root=new TreeNode(preorder[0]);
+        st.push(root);
+        int i=1;
+        TreeNode curr;
+        while(st.size()>0 && i!=n){
+            curr=st.peek();
+            while(st.size()>0 && preorder[i]>st.peek().val){
+                curr=st.pop();
+            }
+            TreeNode newNode=new TreeNode(preorder[i]);
+            if(curr.val>preorder[i]){
+                curr.left=newNode;
+                st.push(newNode);
+            }else{
+                curr.right=newNode;
+                st.push(newNode);
+            }
+            i++;
+        }
+        return root;
+    }
+}

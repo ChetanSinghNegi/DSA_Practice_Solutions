@@ -1,0 +1,79 @@
+//******************************non optimal approach O(n) S(n)  HashMap used**********************************//
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node curr=head;
+        Node dummyCopy=new Node(-1);
+        Node dummyTail=dummyCopy;
+
+        //HashMap of <original,original's duplicate
+        HashMap<Node,Node> hm=new HashMap<>();   
+
+        //making deepcopy of original nodes without random pointer 
+        while(curr!=null){   
+            int val=curr.val;
+            Node temp=new Node(val);
+            dummyTail.next=temp;
+            dummyTail=temp;
+            hm.put(curr,temp);
+            curr=curr.next;
+        }
+
+        //mapping random pointer in deepcopy with the help of hashmap
+        curr=head;
+        while(curr!=null){
+            Node oriRand=curr.random;
+            Node randOfDup=hm.get(oriRand);
+            Node dupOfCurr=hm.get(curr);
+            dupOfCurr.random=randOfDup;
+            curr=curr.next;
+        }
+
+        // testing
+        // while(dummyCopy!=null){
+        //     System.out.print(head.val+"  "+dummyCopy.val);
+        //     dummyCopy=dummyCopy.next;
+        //     head=head.next;
+        // }
+
+        dummyCopy=dummyCopy.next;
+        return dummyCopy;
+    }
+}
+
+//******************************best approach O(n) S(1)  only Node links used**********************************//
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node curr=head;
+
+        //making deepcopy and attaching it next to original ele subsequently
+        while(curr!=null){
+            Node temp=new Node(curr.val);
+            temp.next=curr.next;
+            curr.next=temp;
+            curr=temp.next;
+        }
+
+        //setting random data member of deepcopy node
+        curr=head;
+        while(curr!=null){
+            Node currRand=curr.random;
+            Node copiedNode=curr.next;
+            copiedNode.random = currRand!=null?currRand.next:null;
+            curr=copiedNode.next;
+        }
+
+        //seperating original to deepcopy
+        curr=head;
+        Node dummyCopy=new Node(-1);
+        Node dummyTail=dummyCopy;
+        while(curr!=null){
+            dummyTail.next=curr.next;
+            dummyTail=dummyTail.next;
+            curr.next=dummyTail.next;
+            curr=curr.next;
+        }
+
+        dummyCopy=dummyCopy.next;
+        return dummyCopy;
+    }
+}

@@ -1,0 +1,28 @@
+class Solution
+{
+    //Function to find the minimum number of platforms required at the
+    //railway station such that no train waits.
+    static int findPlatform(int arr[], int dep[], int n)
+    {
+        // add your code here
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+        int startingIdx=0,endingIdx=0;
+        int maxRooms=0,currRooms=0;
+        while(startingIdx<arr.length){  //two pointers 
+            if(arr[startingIdx]<=dep[endingIdx]){
+  //handling case where arrival and departure time is same so first increasing platform count and increasing startingIdx 
+                startingIdx++;
+                currRooms++;
+            }else{
+                endingIdx++;
+                currRooms--;
+            }
+            if(currRooms>maxRooms){
+                maxRooms=currRooms;
+            }
+        }
+        return maxRooms;
+    }
+    
+}

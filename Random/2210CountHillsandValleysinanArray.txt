@@ -1,0 +1,27 @@
+class Solution {
+    public int countHillValley(int[] nums) {
+        int idx=1;
+        int count=0;
+        int n=nums.length;
+        while(idx<n-1){
+            int ele=nums[idx];
+            int pre=nums[idx-1];
+            
+            while(idx+1<n && nums[idx+1]==nums[idx]){
+                idx++;
+            }
+            if(idx+1>=n){
+                return count;
+            }
+            int next=nums[idx+1];
+            if(ele > pre && ele> next){
+                count++;
+            }
+            if(ele<pre && ele<next){
+                count++;
+            }
+            idx++;
+        }
+        return count;
+    }
+}

@@ -1,0 +1,49 @@
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> ans=helper(nums,0,(long)target,4);
+        return ans;
+    }
+    public List<List<Integer>> helper(int[] nums,int left,long target,int k){
+        if(k==2){
+            return BS(nums,left,target);
+        }
+
+        List<List<Integer>> ans=new ArrayList<>();
+        for(int i=left;i<=nums.length-k;i++){
+            if(i>left && nums[i]==nums[i-1]){
+                continue;
+            }
+            long currTarget=target-nums[i];
+            List<List<Integer>> preAns= helper(nums,i+1,currTarget,k-1);
+            for(List<Integer> p:preAns){
+                p.add(0, nums[i]);
+                ans.add(p);
+            }
+        }
+        return ans;
+    }
+    public List<List<Integer>> BS(int[] nums,int left,long target){
+        int n=nums.length;
+        int right=n-1;
+        int start=left;
+        List<List<Integer>> ans=new ArrayList<>();
+        while(left<right){
+            if(left>start && nums[left]==nums[left-1]){
+                left++;
+                continue;
+            }
+            long sum=nums[left]+nums[right];
+            if(sum==target){
+                List<Integer> pair=new ArrayList<>();
+                pair.add(nums[left]);
+                pair.add(nums[right]);
+                ans.add(pair);
+                left++;
+                right--;
+            }else if(sum>target) right--;
+            else left++;
+        }
+        return ans;
+    }
+}

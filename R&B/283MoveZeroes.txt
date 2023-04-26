@@ -1,0 +1,26 @@
+class Solution {
+  public void moveZeroes(int[] nums) {
+      helper(0,-1,nums);
+  }
+  public void helper(int idx,int lastZeroIdx,int[] nums){
+      if(idx==nums.length){
+          return;
+      }
+      if(nums[idx]!=0){
+          if(lastZeroIdx!=-1){
+              swap(idx,lastZeroIdx,nums);
+              lastZeroIdx++;
+          }
+      }else{
+          if(lastZeroIdx==-1){
+              lastZeroIdx=idx;
+          }
+      }
+      helper(idx+1,lastZeroIdx,nums);
+  }
+  public void swap(int f,int s,int[] nums){
+      int temp=nums[f];
+      nums[f]=nums[s];
+      nums[s]=temp;
+  }
+}

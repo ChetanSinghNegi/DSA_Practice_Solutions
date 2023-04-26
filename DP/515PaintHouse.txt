@@ -1,0 +1,73 @@
+//Memoization
+public class Solution {
+    public int minCost(int[][] costs) {
+        // write your code here
+        int n = costs.length;
+        if(n == 0) return 0;
+        int[][] dp = new int[n][3];
+        for(int i=0 ;i<n; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        return helper(0, -1, costs, dp);
+    }
+    public int helper(int idx, int prevColor, int[][] costs, int[][] dp){
+        if( idx == costs.length ) return 0;
+        
+        if(prevColor != -1 && dp[idx][prevColor] != -1) return dp[idx][prevColor];
+
+        int ans1 = prevColor == 0 ? Integer.MAX_VALUE:helper(idx + 1, 0, costs, dp) + costs[idx][0];
+        int ans2 = prevColor == 1 ? Integer.MAX_VALUE:helper(idx + 1, 1, costs, dp) + costs[idx][1];
+        int ans3 = prevColor == 2 ? Integer.MAX_VALUE:helper(idx + 1, 2, costs, dp) + costs[idx][2];
+
+        int currAns = Math.min(ans1, Math.min(ans2, ans3));
+        if(prevColor != -1) dp[idx][prevColor] = currAns;
+        return currAns;
+    }
+}
+
+//tabulation
+public class Solution {
+    public int minCost(int[][] costs) {
+        // write your code here
+        int n = costs.length;
+        if(n == 0) return 0;
+        int[][] dp = new int[n][3];
+        dp[0][0] = costs[0][0];
+        dp[0][1] = costs[0][1];
+        dp[0][2] = costs[0][2];
+
+        for(int i = 1; i<n; i++){
+            int x = dp[i-1][0];
+            int y = dp[i-1][1];
+            int z = dp[i-1][2];
+
+            dp[i][0] = Math.min(y,z) + costs[i][0];
+            dp[i][1] = Math.min(x,z) + costs[i][1];
+            dp[i][2] = Math.min(x,y) + costs[i][2];
+        }
+        return Math.min(dp[n - 1][0],Math.min(dp[n - 1][1],dp[n - 1][2]));
+    }
+}
+
+//tabulation space optimized
+public class Solution {
+    public int minCost(int[][] costs) {
+        // write your code here
+        int n = costs.length;
+        if(n == 0) return 0;
+        int a = costs[0][0];
+        int b = costs[0][1];
+        int c = costs[0][2];
+
+        for(int i = 1; i<n; i++){
+            int x = a;
+            int y = b;
+            int z = c;
+
+            a = Math.min(y,z) + costs[i][0];
+            b = Math.min(x,z) + costs[i][1];
+            c = Math.min(x,y) + costs[i][2];
+        }
+        return Math.min(a,Math.min(b,c));
+    }
+}

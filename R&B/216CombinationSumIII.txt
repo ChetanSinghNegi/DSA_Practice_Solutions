@@ -1,0 +1,24 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ans=new ArrayList<>();
+        List<Integer> curr=new ArrayList<>();
+        helper(1,k,n,curr,ans);
+        return ans;
+    }
+    public void helper(int idx,int k,int n,List<Integer> curr,List<List<Integer>> ans){
+        if(k==0){
+            if(n==0){
+                List<Integer> copy=new ArrayList<>(curr);
+                ans.add(copy);
+            }
+            return ;        
+        }
+        if(idx==10 || n<0){
+            return;
+        }
+        helper(idx+1,k,n,curr,ans);
+        curr.add(idx);
+        helper(idx+1,k-1,n-idx,curr,ans);
+        curr.remove(curr.size()-1);
+    }
+}

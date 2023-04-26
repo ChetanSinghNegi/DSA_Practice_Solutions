@@ -1,0 +1,32 @@
+public class Solution {
+    /**
+     * @param nums: an array of integer
+     * @param target: An integer
+     * @return: An integer
+     */
+    public int twoSum6(int[] nums, int target) {
+        // write your code here
+        Arrays.sort(nums);
+        int i=0;
+        int j=nums.length-1;
+        int count=0;    
+        while(i<j){
+            int ele1=nums[i];
+            int ele2=nums[j];
+            if(ele1+ele2==target){
+                count++;
+                while(i<nums.length && nums[i]==ele1){
+                    i++;
+                }
+                while(j>=0 && nums[j]==ele2){
+                    j--;
+                }
+            }else if(ele1+ele2>target){
+                j--;
+            }else{
+                i++;
+            }
+        }
+        return count;
+    }
+}

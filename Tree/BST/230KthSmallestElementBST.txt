@@ -1,0 +1,21 @@
+class Solution {
+    int sol;
+    int cnt;
+    public int kthSmallest(TreeNode root, int k) {
+        sol=0;
+        cnt=0;
+        inOrder(root,k);
+        return sol;
+    }
+    public void inOrder(TreeNode root,int k){
+        if(root==null || sol!=0) return;
+
+        inOrder(root.left,k);
+        cnt++;
+        if(k==cnt){
+            sol=root.val;
+            return;
+        }
+        inOrder(root.right,k);
+    }
+}

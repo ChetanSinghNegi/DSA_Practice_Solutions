@@ -1,0 +1,25 @@
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int ele=nums[i];
+
+            //if hashMap key not present
+            if(hm.containsKey(ele)==false){
+                hm.put(ele,i);
+            }
+            
+            //else we put if i-j>k so that next duplicate we put element 
+            //again at closer to next's next duplicate
+            else{
+                int j=hm.get(ele);
+                if(Math.abs(i-j)<=k){
+                    return true;
+                }else{
+                    hm.put(ele,i);
+                }
+            }
+        }
+        return false;
+    }
+}

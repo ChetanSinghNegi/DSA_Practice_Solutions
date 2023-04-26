@@ -1,0 +1,33 @@
+class Solution {
+    public class Mover {
+        long min;
+        long max;
+        boolean isBST;
+        Mover(){
+            min=Long.MAX_VALUE;
+            max=Long.MIN_VALUE;
+            isBST=true;
+        }
+        public String toString(){
+            return (min+"  "+max+"  "+isBST);
+        }
+    }
+    public boolean isValidBST(TreeNode root) {
+        Mover res=dfs(root);
+        return res.isBST;
+    }
+
+    public Mover dfs(TreeNode root){
+        if(root==null) return new Mover();
+
+        Mover lM=dfs(root.left);  
+        Mover rM=dfs(root.right);
+
+        Mover ans=new Mover();
+        ans.isBST=lM.isBST && rM.isBST && lM.max<root.val  && rM.min>root.val;
+        ans.min = Math.min(Math.min(lM.min,root.val),rM.min);
+        ans.max = Math.max(Math.max(rM.max,root.val),lM.max);
+        // System.out.println(ans);
+        return ans;
+    }
+}

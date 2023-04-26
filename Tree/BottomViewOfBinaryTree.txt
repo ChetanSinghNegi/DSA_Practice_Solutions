@@ -1,0 +1,42 @@
+
+class Solution
+{
+    //Function to return a list containing the bottom view of the given tree.
+     TreeMap<Integer,Pair> tm;
+     ArrayList<Integer> bottomView(Node root){
+    
+        // add your code
+        tm=new TreeMap<>(); 
+        dfs(root,0,0);
+        ArrayList<Integer> bottomViewRes=new ArrayList<>();
+        for(Integer col:tm.keySet()){
+            Pair curr=tm.get(col);
+            bottomViewRes.add(curr.pVal);
+        }
+        return bottomViewRes;
+    }
+     class Pair{
+        int pRow;
+        int pVal;
+        Pair(int r,int v){
+            this.pRow=r;
+            this.pVal=v;
+        }
+    }
+     void dfs(Node root,int row,int col){
+        if(root==null) return;
+        
+        //checking col exist in treeMap
+        if(tm.containsKey(col)==false){  //if not then put that col
+            tm.put(col,new Pair(row,root.data));
+        }else{   //if Exist then check for the row inside if its minimum or not
+            if(tm.get(col).pRow<=row){
+                tm.get(col).pRow=row;
+                tm.get(col).pVal=root.data;
+            }
+        }
+        
+        dfs(root.left,row+1,col-1);
+        dfs(root.right,row+1,col+1);
+    }
+}

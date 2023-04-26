@@ -1,0 +1,39 @@
+class Solution {
+    public int triangleNumber(int[] nums) {
+        int count=0;
+        Arrays.sort(nums);
+        int n=nums.length;
+        for(int i=n-1;i>=0;i--){
+            int ele=nums[i];
+            if(ele==0){
+                continue;
+            }
+            int currCount=triangleNumber(nums,0,i-1,ele);
+            count+=currCount;
+        }
+        return count;
+    }
+    public int triangleNumber(int[] nums,int l,int r,int target){
+        int currCount=0;
+        while(l<r){
+            int ele1=nums[l];
+            int ele2=nums[r];
+            if(ele1==0){
+                l++;
+                continue;
+            }
+            if(ele2==0){
+                r--;
+                continue;
+            }
+            int sum=ele1+ele2;
+            if(sum>target){
+                currCount+=r-l;
+                r--;
+            }else{
+                l++;
+            }
+        }
+        return currCount;
+    }
+}

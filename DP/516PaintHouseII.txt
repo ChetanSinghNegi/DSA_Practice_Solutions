@@ -1,0 +1,51 @@
+//tabulation O(n*k) S(k)
+public class Solution {
+    /**
+     * @param costs: n x k cost matrix
+     * @return: an integer, the minimum cost to paint all houses
+     */
+    public int minCostII(int[][] costs) {
+        int n = costs.length;
+        if (n == 0)
+            return 0;
+
+        int k = costs[0].length;
+
+        int[] dp = new int[k];
+        for (int c = 0; c < k; c++) {
+            dp[c] = costs[0][c];
+        }
+
+        for (int i = 1; i < n; i++) {
+
+            int firstMin = Integer.MAX_VALUE;
+            int secondMin = Integer.MAX_VALUE;
+            for (int prev = 0; prev < k; prev++) {
+                if (dp[prev] <= firstMin) {
+                    secondMin = firstMin;
+                    firstMin = dp[prev];
+                } else if (dp[prev] < secondMin) {
+                    secondMin = dp[prev];
+                }
+            }
+
+            int[] curr = new int[k];
+
+            for (int c = 0; c < k; c++) {
+                // Extracting Min of Previous Row Excluding Our Column
+                if (dp[c] == firstMin)
+                    curr[c] = costs[i][c] + secondMin;
+                else
+                    curr[c] = costs[i][c] + firstMin;
+            }
+
+            dp = curr;
+        }
+
+        int min = Integer.MAX_VALUE;
+        for (int c = 0; c < k; c++) {
+            min = Math.min(dp[c], min);
+        }
+        return min;
+    }
+}

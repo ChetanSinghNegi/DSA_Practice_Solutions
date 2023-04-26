@@ -1,0 +1,33 @@
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        ArrayList<Integer> al=new ArrayList<>();
+        for(int i=0;i<candidates.length;i++){
+            al.add(candidates[i]);
+        }
+        List<Integer> combination=new ArrayList<>();
+        List<List<Integer>> combinations=new ArrayList<>();
+        helper(0,target,al,combination,combinations);
+        return combinations;
+    }
+    public void helper(int idx,int target,ArrayList<Integer> al,List<Integer> combination,List<List<Integer>> combinations){
+        if(target==0){
+            List<Integer> copy=new ArrayList<>(combination);
+            combinations.add(copy);
+            return;
+        }
+        if(idx==al.size() || target<0){
+            return;
+        }
+        int ele=al.get(idx);
+        for(int i=0;target>=i*ele;i++){
+            int newVal=ele*i;
+            for(int j=1;j<=i;j++){
+                combination.add(ele);
+            }
+            helper(idx+1,target-newVal,al,combination,combinations);
+            for(int j=1;j<=i;j++){
+                combination.remove(combination.size()-1);
+            }  
+        }
+    }
+}

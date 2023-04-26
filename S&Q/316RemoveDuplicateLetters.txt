@@ -1,0 +1,43 @@
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        HashSet<Character> inStack=new HashSet<>();  //S(26) at max
+        HashMap<Character,Integer> hm=new HashMap<>();  //S(26) at max
+        Deque<Character> dq=new ArrayDeque<>();  //S(n) space complexity
+
+        //storing freq of characters
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            hm.put(ch,hm.getOrDefault(ch,0)+1);
+        }
+
+        
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+
+            //already there in ans
+            if(inStack.contains(ch)==true){
+                hm.put(ch,hm.get(ch)-1);
+            }else{
+
+                //checking if currChar can remove previous char to get lexi order correct
+                while(dq.size()>0 && dq.getLast()>ch && hm.get(dq.getLast())>0){
+                    char rem=dq.removeLast();
+                    inStack.remove(rem);
+                }
+
+                //adding Itself
+                dq.addLast(ch);
+                hm.put(ch,hm.get(ch)-1);
+                inStack.add(ch);
+            }
+        }
+
+        //getting our answer from dq 
+        StringBuilder sb=new StringBuilder("");
+        while(dq.size()>0){
+            char c=dq.removeFirst();
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+}

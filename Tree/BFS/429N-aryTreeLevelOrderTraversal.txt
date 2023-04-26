@@ -1,0 +1,52 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        Queue<Node> q=new ArrayDeque<>();
+        int count=1;
+        List<List<Integer>> ans=new ArrayList<>();
+
+        //empty G.Tree
+        if(root==null) return ans;
+
+        //non Empty G.Tree
+        q.add(root);
+        List<Integer> currList=new ArrayList<>();
+
+        while(q.size()>0){
+            Node curr=q.remove();
+            currList.add(curr.val);
+            count--;
+
+            //adding all childrens to queue
+            for(Node n:curr.children){
+                q.add(n);
+            }
+
+            //if count==0 then its a end of one level 
+            if(count==0){
+                ans.add(currList);
+                currList=new ArrayList<>();
+                count=q.size();
+            }
+        }
+        return ans;
+    }
+}

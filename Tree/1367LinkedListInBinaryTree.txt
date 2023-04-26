@@ -1,0 +1,70 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSubPath(ListNode curr, TreeNode root) {
+        if(root==null ){
+            return false;
+        }
+
+        //if this THE root checking
+        if(curr.val==root.val){
+            // System.out.println(curr.val+"start");
+            boolean isFound=found(curr,root);
+            if(isFound==true) return true;
+        }
+
+        // if this is not the root then check for childs
+        boolean leftFound=isSubPath(curr,root.left);
+        if(leftFound) return true;
+        boolean rightFound=isSubPath(curr,root.right);
+        if(rightFound) return true;
+        
+        return false;
+    }
+    public boolean found(ListNode curr,TreeNode root){
+        
+        //linkedlist ended so found all
+        if(curr==null){
+            return true;
+        }
+
+        //tree ended but linkedlist not completely found
+        if(root==null ){
+            return false;
+        }
+
+        
+        // System.out.print(curr.val+"  "+root.val+"  ");
+        if(curr.val==root.val){
+            if(curr.next==null) return true;
+            boolean leftFound=found(curr.next,root.left);
+            if(leftFound) return true;
+            boolean rightFound=found(curr.next,root.right);
+            if(rightFound) return true;
+        }
+        return false;
+    }
+}

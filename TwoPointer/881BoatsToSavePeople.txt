@@ -1,0 +1,25 @@
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+
+        Arrays.sort(people);
+        int count = 0;
+        int l = 0;
+        int r = people.length - 1;
+        while(l <= r){
+            if(l == r){
+                count++;
+                break;
+            }
+            int currWeight = people[l] + people[r];
+            if(currWeight <= limit){
+                l++;
+                r--;
+                currWeight = people[l] + people[r];
+            }else{
+                r--;
+            }
+            count++;
+        }
+        return count;
+    }
+}

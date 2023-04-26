@@ -1,0 +1,30 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for(int item : nums){
+            sum += item;
+        }
+
+        if(sum % 2 == 1) return false;
+        return isSubset(sum/2, nums);
+    }
+
+    public boolean isSubset(int sum, int[] nums){
+        int n = nums.length;
+        boolean[] dp = new boolean[sum + 1];
+        dp[0] = true;
+
+        for(int item = 1; item <= n; item++){
+            boolean[] newDP = new boolean[sum + 1];
+
+            for(int currSum = 0; currSum <= sum; currSum++){
+                boolean no = dp[currSum];
+                boolean yes = currSum >= nums[item - 1]? dp[currSum - nums[item - 1]]:false;
+
+                newDP[currSum] = no || yes;
+            }
+            dp = newDP;
+        }
+        return dp[sum];
+    }
+}

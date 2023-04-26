@@ -1,0 +1,46 @@
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int max=0;
+        int min=0;
+        for(int i=0;i<weights.length;i++)
+        {
+            min=Math.max(min,weights[i]);
+            max=max+weights[i];
+        }
+        int value=0; //Binary Search starts
+        while(min<=max)   // O( log(max - min) )
+        {
+            int mid=(min+max)/2;
+            int daysRequired=noOfDaysNeededWithCapacity(weights,mid);  //O(n)
+            if(daysRequired>days)
+            {
+                min=mid+1;
+            }
+            else{
+                value=mid;
+                max=mid-1;
+            }
+                
+        }
+        return value;
+    }
+    public int noOfDaysNeededWithCapacity(int[] weights,int capacity)
+    {
+        int daysRequired=1;
+        int current =0;
+        
+        for(int i=0;i<weights.length;i++)
+        {
+            current=current+weights[i];
+            if(current>capacity)
+            {
+                daysRequired++;
+                current=weights[i];
+            }
+        }
+        return  daysRequired;
+    }
+}
+
+    
+    

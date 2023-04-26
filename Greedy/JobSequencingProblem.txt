@@ -1,0 +1,49 @@
+/*
+class Job {
+    int id, profit, deadline;
+    Job(int x, int y, int z){
+        this.id = x;
+        this.deadline = y;
+        this.profit = z; 
+    }
+}
+*/
+
+class Solution
+{
+    public static class myComparator implements Comparator<Job>{
+        public int compare(Job j1,Job j2){
+            if(j1.profit!=j2.profit){
+                return j2.profit-j1.profit;
+            }
+            return j2.deadline-j1.deadline;
+        }
+    }  
+    //Function to find the maximum profit and the number of jobs done.
+    int[] JobScheduling(Job arr[], int n)
+    {
+        // Your code here
+        Arrays.sort(arr,new myComparator());
+        int maxDeadLine=0;
+        for(Job j:arr){
+            if(j.deadline>maxDeadLine){
+                maxDeadLine=j.deadline;
+            }
+        }
+        boolean[] slots=new boolean[maxDeadLine];
+        int maxProfit=0;
+        int count=0;
+        for(Job j:arr){
+            for(int i=j.deadline-1;i>=0;i--){
+                if(slots[i]==false){
+                    slots[i]=true;
+                    count++;
+                    maxProfit+=j.profit;
+                    break;
+                }
+            }
+        }
+        return new int[]{count,maxProfit};
+    }
+}
+

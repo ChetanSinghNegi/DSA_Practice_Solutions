@@ -1,0 +1,29 @@
+class Solution
+{
+    int maxPathSum;
+    int maxPathSum(Node root)
+    { 
+        // code here
+        if(root==null) return 0;
+        maxPathSum=Integer.MIN_VALUE;
+        helper(root);
+        return maxPathSum;
+    } 
+    int helper(Node root){
+        if(root==null) return 0;
+        
+        //excluding maxPathSum change execution for leaf and one child node
+        if(root.left==null && root.right==null) return root.data;
+        if(root.left==null) return helper(root.right)+root.data;
+        if(root.right==null) return helper(root.left)+root.data;
+        
+        int leftMaxPath=helper(root.left);
+        int rightMaxPath=helper(root.right);
+        
+        //altering maxPathSum if condition fulfilled
+        int currPathSum=leftMaxPath+rightMaxPath+root.data;
+        maxPathSum=Math.max(maxPathSum,currPathSum);
+        
+        return Math.max(leftMaxPath,rightMaxPath)+root.data;
+    }
+}

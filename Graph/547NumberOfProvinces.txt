@@ -1,0 +1,48 @@
+public class Graph{
+    ArrayList<Integer>[] adj;
+    Graph(int n){
+        adj=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            adj[i]=new ArrayList<>();
+        }
+    }
+    public void addEdge(int src,int dest){
+        adj[src].add(dest);
+    }
+
+    public void DFS(boolean[] dp,int source){
+        if(dp[source]==true) return ;
+
+        dp[source]=true;
+        for(int child:adj[source]){
+                DFS(dp,child);
+        }
+        return ;
+    }
+    public int DFS(){
+        boolean[] dp=new boolean[adj.length];
+        int count=0;
+        for(int src=0;src<adj.length;src++){
+            if(dp[src]==false){
+                DFS(dp,src);
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        Graph g=new Graph(isConnected.length);
+        for(int sr=0;sr<isConnected.length;sr++){
+            for(int sc=0;sc<isConnected[0].length;sc++){
+                if(sr==sc) continue;
+                if(isConnected[sr][sc]==1){
+                    g.addEdge(sr,sc);
+                }
+            }
+        }
+        return g.DFS();
+    }
+}

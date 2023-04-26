@@ -1,0 +1,30 @@
+class Solution {
+    public int[] findPeakGrid(int[][] mat) {
+        int dr=mat.length;
+        int dc=mat[0].length;
+        int[] ans=new int[2];
+        for(int sr=0;sr<dr;sr++){
+            int low=0;
+            int high=dc-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                int ele=mat[sr][mid];
+                long lVal=(mid-1>=0)?mat[sr][mid-1]:-1;
+                long rVal=(mid+1<dc)?mat[sr][mid+1]:-1;
+                long tVal=(sr-1>=0)?mat[sr-1][mid]:-1;
+                long dVal=(sr+1<dr)?mat[sr+1][mid]:-1;
+                if(ele>lVal && ele>rVal && ele>tVal && ele>dVal){
+                    ans[0]=sr;
+                    ans[1]=mid;
+                    return ans;
+                }
+                if(lVal>rVal){
+                    high=mid-1;
+                }else{
+                    low=mid+1;
+                } 
+            }
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,38 @@
+class GfG
+{
+    Node flatten(Node root)
+    {
+	// Your code here
+	    if(root==null || root.next==null){
+	        return root;
+	    }
+	    
+	    //going to end of two LL
+	    Node b=flatten(root.next);
+	    return merge(root,b);
+    }
+    
+    //merging two LL
+    Node merge(Node a,Node b){
+        Node dummy=new Node(-1);
+        Node dummyTail=dummy;
+        while(a!=null && b!=null){
+            if(a.data<=b.data){
+                dummyTail.bottom=a;
+                dummyTail=dummyTail.bottom;
+                a=a.bottom;
+            }else{
+                dummyTail.bottom=b;
+                dummyTail=dummyTail.bottom;
+                b=b.bottom;
+            }
+        }
+        if(a!=null){
+            dummyTail.bottom=a;
+        }
+        if(b!=null){
+            dummyTail.bottom=b;
+        }
+        return dummy.bottom;
+    }
+}

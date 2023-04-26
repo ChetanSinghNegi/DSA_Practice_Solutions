@@ -1,0 +1,36 @@
+class Solution {
+    public class Pair implements Comparable<Pair>{
+        int sr,sc,maxEffort;
+        Pair(int sr,int sc,int maxEffort){
+            this.sr=sr;
+            this.sc=sc;
+            this.maxEffort=maxEffort;
+        }
+        public int compareTo(Pair o){
+            return this.maxEffort-o.maxEffort;
+        }
+    }
+    public int minimumEffortPath(int[][] heights) {
+        int dr=heights.length;
+        int dc=heights[0].length;
+        PriorityQueue<Pair> pq=new PriorityQueue<>();
+        pq.add(new Pair(0,0,0));
+        boolean[][] vis=new boolean[dr][dc];
+        while(pq.size()>0){
+            Pair rem=pq.remove();
+            if(rem.sr==dr-1 && rem.sc==dc-1) return rem.maxEffort;
+            if(vis[rem.sr][rem.sc]==true) continue;
+            vis[rem.sr][rem.sc]=true;
+
+            if(rem.sr-1>=0) pq.add(new Pair(rem.sr-1,rem.sc,Math.max(rem.maxEffort,Math.abs(heights[rem.sr][rem.sc]-heights[rem.sr - 1][rem.sc]))));
+            
+            if(rem.sc + 1 < dc) pq.add(new Pair(rem.sr,rem.sc+1,Math.max(rem.maxEffort,Math.abs(heights[rem.sr][rem.sc]-heights[rem.sr][rem.sc + 1]))));
+
+            if(rem.sr + 1 < dr) pq.add(new Pair(rem.sr+1,rem.sc,Math.max(rem.maxEffort,Math.abs(heights[rem.sr][rem.sc]-heights[rem.sr + 1][rem.sc]))));
+
+            if(rem.sc-1>=0) pq.add(new Pair(rem.sr,rem.sc-1,Math.max(rem.maxEffort,Math.abs(heights[rem.sr][rem.sc]-heights[rem.sr][rem.sc - 1]))));
+        }
+        return -1;
+
+    }
+}

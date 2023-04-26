@@ -1,0 +1,24 @@
+public class Solution {
+    // DO NOT MODIFY THE ARGUMENTS WITH "final" PREFIX. IT IS READ ONLY
+    public int minimize(final int[] a, final int[] b, final int[] c) {
+        int i=0,j=0,k=0;
+        int diff=Integer.MAX_VALUE;
+        while(i<a.length && j<b.length && k<c.length){
+            int x=a[i],y=b[j],z=c[k];
+            int currMax=Math.max(x,Math.max(y,z));
+            int currMin=Math.min(x,Math.min(y,z));
+            int currDiff=Math.abs(currMax-currMin);
+            if(diff>currDiff){
+                diff=currDiff;
+            }
+            if(currMin==x){
+                i++;
+            }else if(currMin==y){
+                j++;
+            }else{
+                k++;
+            }
+        }
+        return diff;
+    }
+}

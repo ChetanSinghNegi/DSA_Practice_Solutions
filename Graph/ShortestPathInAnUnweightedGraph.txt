@@ -1,0 +1,47 @@
+import java.util.*;
+public class Solution {
+	public static class Pair{
+		int node;
+		int parent;
+		Pair(int n,int p){
+			this.node=n;
+			this.parent=p;
+		}
+	}
+
+	public static LinkedList<Integer> shortestPath(int[][] edges, int n, int m, int s, int t) {
+		// Write your code here.
+		ArrayList<Integer>[] graph=new ArrayList[n+1];
+		for(int i=0;i<=n;i++){
+			graph[i]=new ArrayList<>();
+		}
+		for(int i=0;i<m;i++){
+			graph[edges[i][0]].add(edges[i][1]);
+			graph[edges[i][1]].add(edges[i][0]);
+		}
+		boolean[] vis=new boolean[n+1];
+		int[] parents=new int[n+1];
+
+		Queue<Pair> q=new ArrayDeque<>();
+		q.add(new Pair(s,-1));
+
+		while(q.size()>0){
+			Pair rem=q.remove();
+			if(vis[rem.node]==true) continue;
+			vis[rem.node]=true;
+			parents[rem.node]=rem.parent;
+			for(int nbr:graph[rem.node]){
+				q.add(new Pair(nbr,rem.node));
+			}
+		}
+		LinkedList<Integer> ll=new LinkedList<>();
+		int x=t;
+		while(x!=-1){
+			ll.addFirst(x);
+			x=parents[x];
+		}
+		return ll;
+		
+	}
+
+}

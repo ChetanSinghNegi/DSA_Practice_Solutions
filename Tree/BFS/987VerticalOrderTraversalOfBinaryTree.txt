@@ -1,0 +1,32 @@
+class Solution {
+    TreeMap<Integer,TreeMap<Integer,ArrayList<Integer>>> res;
+    public void dfs(TreeNode root,int row,int col){
+        if(root==null) return ;
+
+        if(res.containsKey(col)==false) res.put(col,new TreeMap<>());
+        if(res.get(col).containsKey(row)==false) res.get(col).put(row,new ArrayList<>());
+        res.get(col).get(row).add(root.val); 
+
+        dfs(root.left,row+1,col-1);
+        dfs(root.right,row+1,col+1);
+    }
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        res=new TreeMap<>();
+        dfs(root,0,0);
+        List<List<Integer>> ans=new ArrayList<>();
+        for(Integer col:res.keySet()){
+            TreeMap<Integer,ArrayList<Integer>> curr=res.get(col);
+            List<Integer> currAns=new ArrayList<>();
+            for(Integer row:curr.keySet()){
+                ArrayList<Integer> oneD=curr.get(row);
+                Collections.sort(oneD);
+                for(Integer val:oneD){
+                    currAns.add(val);
+                }
+            }
+            ans.add(currAns);
+        }
+        
+        return ans;
+    }
+}

@@ -1,0 +1,37 @@
+class Solution {
+
+    public class Pair implements Comparable<Pair>{
+        int idx;
+        long cost;
+        Pair(int idx,long weight){
+            this.idx=idx;
+            this.cost=weight;
+        }
+        public int compareTo(Pair o){
+            return (int)(this.cost - o.cost);
+        }
+    }
+    public int minCostConnectPoints(int[][] points) {
+        int n=points.length;
+        PriorityQueue<Pair> pq=new PriorityQueue<>();
+        pq.add(new Pair(0,0));
+        boolean[] vis=new boolean[n];
+        int cost=0;
+        int count=0;
+
+        while(pq.size() > 0 && count<n){   //count<n is pruning for faster code
+            Pair rem=pq.remove();
+            if(vis[rem.idx]==true) continue;
+            vis[rem.idx]=true;
+            count++;
+            cost+=rem.cost;
+            for(int i=0;i<n;i++){
+                if(vis[i]==false){
+                    long srcToNbrCost = Math.abs(points[rem.idx][0]-points[i][0]) + Math.abs(points[rem.idx][1]-points[i][1]);
+                    pq.add(new Pair(i,srcToNbrCost)); 
+                }
+            }
+        }
+        return cost;
+    }
+}

@@ -1,0 +1,64 @@
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null || root==p || root==q) return root;
+
+        TreeNode leftFound=lowestCommonAncestor(root.left,p,q);
+        TreeNode rightFound=lowestCommonAncestor(root.right,p,q);
+        
+        //this is the LCA Point
+        if(leftFound!=null && rightFound!=null){
+            return root;
+        }
+
+        //if one of the target found or no target found
+        //long code is   TreeNode x=who is not null among lf and rf .if both null 
+        // and i am not the target node so return null
+
+        return leftFound!=null?leftFound:rightFound;
+    }
+}
+
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        List<TreeNode> al1=new ArrayList<>();
+        List<TreeNode> al2=new ArrayList<>();
+        RootToNode(root,p,al1);
+        RootToNode(root,q,al2);
+
+        int i=al1.size()-1,j=al2.size()-1;
+        while(i>=0 && j>=0 && al1.get(i).val==al2.get(j).val){
+            i--;
+            j--;
+        }
+        return al1.get(i+1);
+    }
+
+    public boolean RootToNode(TreeNode root,TreeNode tar,List<TreeNode> al){
+        if(root==null) return false;
+
+        //if this is THE node
+        if(root.val==tar.val){
+            al.add(root);
+            return true;
+        }
+
+        //checking left side
+        Boolean leftFound=RootToNode(root.left,tar,al);
+        if(leftFound==true){  //if found so return with adding itself
+            al.add(root);
+            return true;
+        }
+
+        //checking right side
+        Boolean rightFound=RootToNode(root.right,tar,al);
+        if(rightFound==true){   //if found so return with adding itself
+            al.add(root);
+            return true;
+        }
+
+        //not found in this tree branch
+        return false;
+
+    }
+}

@@ -1,0 +1,35 @@
+import java.util.*;
+
+public class Main {
+
+	public static int solution(String str, int k) {
+		// write your code here
+		int gCount=0;
+		int left=0,right=0;
+		HashMap<Character,Integer> hm=new HashMap<>();
+		while(right<str.length()){
+		    char ch=str.charAt(right);
+		    hm.put(ch,hm.getOrDefault(ch,0)+1);
+		    while(hm.size()>k){
+		        char leftChar=str.charAt(left);
+		        hm.put(leftChar,hm.get(leftChar)-1);
+		        if(hm.get(leftChar)==0){
+		            hm.remove(leftChar);
+		        }
+		        left++;
+		    }
+		    gCount=Math.max(gCount,right-left+1);
+		    right++;
+		}
+		
+		return gCount;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        int k = scn.nextInt();
+		System.out.println(solution(str,k));
+	}
+
+}

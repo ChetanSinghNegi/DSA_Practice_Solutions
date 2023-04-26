@@ -1,0 +1,37 @@
+class Solution {
+    public int cherryPickup(int[][] grid) {
+        int n = grid.length;
+        int[][][] dp = new int[n][n][n];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                for(int k = 0; k < n; k++){
+                    dp[i][j][k] = -1;
+                }
+            }
+        }
+        int ans = helper(0 ,0 , 0, 0, dp, grid);
+        if(ans < 0) return 0;
+        return ans;
+    }
+
+    public int helper(int row1, int col1, int row2 , int col2, int[][][] dp, int[][] grid){
+        //  int col2 = row1 + col1 - row2; because of this dp is of 3D
+        if(row1 >= grid.length || col1 >= grid.length || row2 >= grid.length || col2 >= grid.length || grid[row1][col1] == -1 || grid[row2][col2] == -1) return Integer.MIN_VALUE;
+
+        if(row1 == grid.length - 1 && col1 == grid.length - 1) return grid[row1][col1];
+
+        if(dp[row1][col1][row2] != -1) return dp[row1][col1][row2];
+        int RR = helper(row1, col1 + 1, row2, col2 + 1, dp, grid);
+        int RD = helper(row1, col1 + 1, row2 + 1, col2, dp, grid);
+        int DR = helper(row1 + 1, col1, row2, col2 + 1, dp, grid);
+        int DD = helper(row1 + 1, col1, row2 + 1, col2, dp, grid);
+        int ans = grid[row1][col1] + grid[row2][col2];
+        if(row1 == row2 && col1 == col2){
+            ans -= grid[row1][col1];
+        }
+        ans += Math.max(RR,Math.max(RD,Math.max(DR,DD)));
+        dp[row1][col1][row2] = ans;
+        return ans;
+    }
+
+}

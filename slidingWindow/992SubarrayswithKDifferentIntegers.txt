@@ -1,0 +1,27 @@
+class Solution {
+    public int subarraysWithKDistinct(int[] nums, int k) {
+			//exact k distinct =(atmost k distinct) - (atmost k-1 distinct)
+        return subarraysWithAtmostKDistinct(nums,k)-subarraysWithAtmostKDistinct(nums,k-1);
+    }
+
+    public int subarraysWithAtmostKDistinct(int [] nums,int k){
+		int maxLength=0;
+		int left=0,right=0;
+		HashMap<Integer,Integer> hm=new HashMap<>();
+		while(right<nums.length){
+			int currRight=nums[right];
+			hm.put(currRight,hm.getOrDefault(currRight,0)+1);
+			while(hm.size()>k){
+				int currLeft=nums[left];
+				hm.put(currLeft,hm.get(currLeft)-1);
+				if(hm.get(currLeft)==0){
+						hm.remove(currLeft);
+				}
+				left++;
+			}
+			maxLength+=right-left+1;
+			right++;
+		}
+		return maxLength;
+    }
+}

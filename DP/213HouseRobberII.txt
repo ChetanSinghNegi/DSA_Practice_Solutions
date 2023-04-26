@@ -1,0 +1,34 @@
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if( n == 0) return 0;
+        if ( n == 1) return nums[0];
+        int[][] dp = new int[n + 1][2];
+        for(int i=0; i<=n; i++){
+            Arrays.fill(dp[i],-1);
+        }
+        int firstRobLastSafe = helper(0, n - 2, 0, nums, dp);
+        for(int i=0; i<=n; i++){
+            Arrays.fill(dp[i],-1);
+        }
+        int firstSafeLastRob = helper(1, n - 1, 0, nums, dp);
+        return Math.max(firstRobLastSafe, firstSafeLastRob);
+    }
+
+    public int helper(int start, int end, int prevRobbed, int[] nums, int[][] dp){
+        if(start == end + 1){
+            return 0;
+        }
+
+        if(dp[start][prevRobbed] != -1) return dp[start][prevRobbed];
+
+        int ans = helper(start + 1, end, 0, nums,dp);
+
+        if(prevRobbed == 0){
+            int withCurrRobbed = helper(start + 1, end, 1, nums, dp) + nums[start];
+            ans = Math.max(ans, withCurrRobbed);
+        }
+        dp[start][prevRobbed] = ans;
+        return ans;
+    }
+}

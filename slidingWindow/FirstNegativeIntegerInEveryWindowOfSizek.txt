@@ -1,0 +1,26 @@
+class Compute {
+  // FirstNegativeIntegerInEveryWindowOfSizek 
+    public long[] printFirstNegativeInteger(long a[], int n, int k)
+    {
+        Deque<Integer> q=new ArrayDeque<>();
+        for(int i=0;i<k;i++){
+            if(a[i]<0){
+                q.addLast(i);
+            }
+        }
+        
+        long[] ans=new long[n-k+1];
+        int wIdx=0;
+        ans[wIdx++]=q.size()>0?a[q.getFirst()]:0;
+        for(int i=k;i<n;i++){
+            if(q.size()>0 && q.getFirst()<=i-k){
+                q.removeFirst();
+            }
+            if(a[i]<0){
+                q.addLast(i);
+            }
+            ans[wIdx++]=q.size()>0?a[q.getFirst()]:0;
+        }
+        return ans;
+    }
+}

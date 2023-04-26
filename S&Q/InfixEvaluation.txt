@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String exp = br.readLine();
+
+    // code
+    Stack<Integer> num=new Stack<>();
+    Stack<Character> op=new Stack<>();
+    for(int i=0;i<exp.length();i++){
+        char ch=exp.charAt(i);
+        if(ch>='0'&&ch<='9'){
+            num.push(ch-'0');
+        }
+        else if(ch=='('){
+            op.push(ch);
+        }
+        else if(ch == ' '){
+            continue;
+        }else if(ch==')'){
+            while(op.size()>0 && op.peek()!='('){
+                int sol=work(num,op);
+                num.push(sol);
+            }
+            op.pop();
+        }
+        else {
+            while(op.size()>0  && op.peek()!='(' && precedence(ch)<=precedence(op.peek())){
+                int sol=work(num,op);
+                num.push(sol);
+            }
+            op.push(ch);
+        }
+    }
+    while(op.size()>0){
+        int sol=work(num,op);
+        num.push(sol);
+    }
+    int ans=num.pop();
+    System.out.println(ans);
+ }
+
+ public static int precedence(char ch){
+     if(ch=='+'||ch=='-'){
+         return 1;
+     }
+     return 2;
+ }
+ public static int calculation(int x1,int x2,char ch){
+     if(ch=='+'){
+         return x1+x2;
+     }
+     else if(ch=='-'){
+         return x1-x2;
+     }
+     else if(ch=='*'){
+         return x1*x2;
+     }
+     return x1/x2;
+ }
+ public static int work(Stack<Integer> num,Stack<Character> op){
+    int x2=num.pop();
+    int x1=num.pop();
+    char oper=op.pop();
+    int sol=calculation(x1,x2,oper);
+    return sol;
+ }
+}

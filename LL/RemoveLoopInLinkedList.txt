@@ -1,0 +1,36 @@
+class Solution
+{
+    //Function to remove a loop in the linked list.
+    public static void removeLoop(Node head){
+        // code here
+        // remove the loop without losing any nodes
+        
+        Node slow=head;
+        Node fast=head;
+        while(fast!=null && fast.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+            if(slow==fast) break;
+        }
+        if(fast==null ||  fast.next==null) { // no cycle
+            return ; 
+        }
+        
+        //finding cycleNode
+        Node temp=head;
+        while(temp!=slow){  
+            temp=temp.next;
+            slow=slow.next;
+        }
+        
+        //again looping to get the last node to cycleNode 
+        slow=slow.next;  
+        while(slow.next!=temp){
+            slow=slow.next;
+        }
+        
+        //making last's next node null (previously on cycleNode)
+        slow.next=null;   
+        return ;
+    }
+}

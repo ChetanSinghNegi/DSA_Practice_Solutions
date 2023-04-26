@@ -1,0 +1,60 @@
+//************************with HashMap O(n) but with S(n) space complexity    ***************************************
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        HashMap<Integer,Boolean> hm=new HashMap<>();
+        ListNode temp=head;
+        while(temp!=null){
+            int currVal=temp.val;
+            if(hm.containsKey(currVal)==true){
+                hm.put(currVal,true);
+            }else{
+                hm.put(currVal,false);
+            }
+            temp=temp.next;
+        }
+        ListNode dummyNode=new ListNode(-101);
+        ListNode dummyHead=dummyNode,dummyTail=dummyNode;
+        temp=head;
+        while(temp!=null){
+            int val=temp.val;
+            boolean isDuplicate=hm.get(val);
+            if(!isDuplicate){
+                dummyTail.next=temp;
+                dummyTail=temp;
+            }
+            temp=temp.next;
+        }
+        dummyTail.next=null;
+        return dummyHead.next;
+    }
+}
+
+
+
+//************************without HashMap O(n) but with S(1) space complexity ***************************************
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode temp=head;
+        ListNode dummyNode=new ListNode(-101);
+        ListNode dummyHead=dummyNode,dummyTail=dummyNode;
+        boolean prev=false;
+
+        while(temp!=null){
+            int currVal=temp.val;
+            ListNode nextNode=temp.next;
+            if(nextNode!=null && currVal==nextNode.val){
+                while(nextNode!=null && currVal==nextNode.val){
+                    nextNode=nextNode.next;
+                }
+            }else{
+                dummyTail.next=temp;
+                dummyTail=temp;
+                temp=temp.next;
+            }
+            temp=nextNode;
+        }
+        dummyTail.next=null;
+        return dummyHead.next;
+    }
+}

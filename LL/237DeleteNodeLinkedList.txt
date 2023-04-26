@@ -1,0 +1,19 @@
+class Solution {
+    public void deleteNode(ListNode node) {
+        ListNode curr=node,prev=null;
+        while(curr!=null){
+            ListNode currNext=curr.next;
+
+            //checking last node if yes then attaching previous node's next to null
+            if(currNext==null){
+                prev.next=null;
+                break;
+            }
+
+            //changing curr node value to next node value
+            curr.val=currNext.val;
+            prev=curr; //previous pointer for the last node
+            curr=curr.next;
+        }
+    }
+}

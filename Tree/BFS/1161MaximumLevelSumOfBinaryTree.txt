@@ -1,0 +1,68 @@
+//BFS O(n) S(n)
+
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        Queue<TreeNode> q=new ArrayDeque<>();
+        q.add(root);
+        
+        int minLevel=1;
+        long maxLevelSum=Integer.MIN_VALUE;
+
+        //BFS
+        int c=1;
+        int currLev=1;
+        while(q.size()>0){
+            long currLevelSum=0; 
+            while(c!=0){
+                TreeNode rem=q.remove();
+                currLevelSum+=rem.val;
+                c--;
+                if(rem.left!=null) q.add(rem.left);
+                if(rem.right!=null) q.add(rem.right);
+            }
+
+            //checking if current level sum is greater than all previous level or not
+            if(currLevelSum>maxLevelSum){
+                minLevel=currLev;
+                maxLevelSum=currLevelSum;
+            }
+
+            c=q.size();
+            currLev++;
+        }
+        
+        return minLevel;
+    }
+}
+
+//DFS O(n) S(h)
+
+class Solution {
+     
+    public int maxLevelSum(TreeNode root) {
+        ArrayList<Long> al=new ArrayList<>();
+        helper(root,al,1);
+        int level=1;
+        long max=Integer.MIN_VALUE;        
+        for(int i=0;i<al.size();i++){
+            long curr=al.get(i);
+            if(curr>max){
+                max=curr;
+                level=i+1;
+            }
+        }
+        return level;
+    }
+
+    public void helper(TreeNode root,ArrayList<Long> al,int level){
+        if(root==null) return;
+
+        if(level>al.size()){
+            al.add((long)root.val);
+        }else{
+            al.set(level-1,al.get(level-1)+root.val);
+        }
+        helper(root.left,al,level+1);
+        helper(root.right,al,level+1);
+    }
+}

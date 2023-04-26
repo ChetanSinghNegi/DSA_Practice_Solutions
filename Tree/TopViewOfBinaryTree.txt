@@ -1,0 +1,44 @@
+
+class Solution
+{
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    
+    static TreeMap<Integer,Pair> tm;
+    static ArrayList<Integer> topView(Node root)
+    {
+        // add your code
+        tm=new TreeMap<>(); 
+        dfs(root,0,0);
+        ArrayList<Integer> topViewRes=new ArrayList<>();
+        for(Integer col:tm.keySet()){
+            Pair curr=tm.get(col);
+            topViewRes.add(curr.pVal);
+        }
+        return topViewRes;
+    }
+    static class Pair{
+        int pRow;
+        int pVal;
+        Pair(int r,int v){
+            this.pRow=r;
+            this.pVal=v;
+        }
+    }
+    static void dfs(Node root,int row,int col){
+        if(root==null) return;
+        
+        //checking col exist in treeMap
+        if(tm.containsKey(col)==false){  //if not then put that col
+            tm.put(col,new Pair(row,root.data));
+        }else{   //if Exist then check for the row inside if its minimum or not
+            if(tm.get(col).pRow>row){
+                tm.get(col).pRow=row;
+                tm.get(col).pVal=root.data;
+            }
+        }
+        
+        dfs(root.left,row+1,col-1);
+        dfs(root.right,row+1,col+1);
+    }
+}

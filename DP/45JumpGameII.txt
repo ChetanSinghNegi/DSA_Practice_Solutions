@@ -1,0 +1,16 @@
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        dp[n - 1] = 0;
+        for(int idx = n - 2;idx >= 0;idx--){
+            int currInc = nums[idx];
+            int minSteps = Integer.MAX_VALUE - 2;
+            for(int inc = 1; ((inc <= currInc) && (inc + idx < n)); inc++){
+                minSteps = Math.min(minSteps, dp[inc + idx]) ;
+            }
+            dp[idx] = minSteps + 1;
+        }
+        return dp[0];
+    }
+}

@@ -1,0 +1,30 @@
+class Solution {
+    int countTriplet(int nums[], int n) {
+        // code here
+        Arrays.sort(nums);
+        int count=0;
+        for(int i=n-1;i>=0;i--){
+            int currCount=threeSum(nums,0,i-1,nums[i]);
+            count+=currCount;
+        }
+        return count;
+    }
+    
+    public int threeSum(int[] nums,int left,int right,int target){
+        int start=left;
+        int count=0;
+        while(left<right){
+            int sum=nums[left]+nums[right];
+            if(sum==target){
+                count++;
+                left++;
+                right--;
+            }else if(sum>target){
+                right--;
+            }else{
+                left++;
+            }
+        }
+        return count;
+    }
+}

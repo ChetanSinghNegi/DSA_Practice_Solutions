@@ -1,0 +1,23 @@
+
+class Solution {
+    long mod = 1000000007;
+    long countStrings(int n) {
+        // code here
+        long[][] dp = new long[n + 1][2];
+        return memo(n, 0, dp);
+    }
+    
+    long memo(int noOfDigitsLeft, int prevDigit, long[][] dp){
+        if(noOfDigitsLeft == 0) return 1;
+        
+        if(dp[noOfDigitsLeft][prevDigit] != 0) return dp[noOfDigitsLeft][prevDigit];
+        
+        //zeroCall 
+        long zeroCall = memo(noOfDigitsLeft - 1, 0, dp);
+        //one call only if prevDigit == 0
+        long oneCall = prevDigit == 0 ? memo(noOfDigitsLeft - 1, 1, dp): 0; 
+        
+        dp[noOfDigitsLeft][prevDigit] = (zeroCall + oneCall) % mod;
+        return dp[noOfDigitsLeft][prevDigit];
+    }
+}

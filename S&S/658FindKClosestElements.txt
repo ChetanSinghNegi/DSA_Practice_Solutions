@@ -1,0 +1,50 @@
+class Solution {
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int i=0;
+        int j=arr.length-1;
+        int idxClosest=0;
+        int diff=Integer.MAX_VALUE;
+        List<Integer> ans=new ArrayList<>();
+        while(i<=j){
+            int mid=i+(j-i)/2;
+            int currEle=arr[mid];
+            int currDiff=x-currEle;
+            if(currEle>x){
+                if(currDiff<diff){
+                    idxClosest=mid;
+                }
+                j=mid-1;
+            }else if(currEle<x){
+                if(currDiff<diff){
+                    idxClosest=mid;
+                }
+                i=mid+1;
+            }else{
+                idxClosest=mid;
+                break;
+            }
+        }
+        int fi;
+        if(arr[idxClosest]==x || idxClosest==0){
+            fi=idxClosest;
+        }else{
+            fi=idxClosest-1;
+        }
+        int li=fi+1;
+        for(int z=0;z<k;z++){
+            int dF=(fi>=0)?Math.abs(x-arr[fi]):Integer.MAX_VALUE;
+            int dS=(li<arr.length)?Math.abs(x-arr[li]):Integer.MAX_VALUE;
+            if(dF<=dS && dF!=Integer.MAX_VALUE){
+                ans.add(0,arr[fi]);
+                // System.out.println(ans+" "+fi+" "+dF+" "+li+" "+dS);
+                fi--;
+            }else {
+                ans.add(arr[li]);
+                // System.out.println(ans+" "+fi+" "+dF+" "+li+" "+dS);
+                li++;
+            }
+        }
+        
+        return ans;
+    }
+}

@@ -1,0 +1,45 @@
+class Solution {
+
+    public class DSU{
+        int[] parent;
+        
+        DSU(int n){
+            parent=new int[n];
+            Arrays.fill(parent,-1);
+        }
+        
+        int find(int ele){
+            if(parent[ele]==-1) return ele;
+            return parent[ele] = find(parent[ele]); 
+        }
+        void union(int ele1, int ele2){
+            int p1=find(ele1);
+            int p2=find(ele2);
+            if(p1==p2) return ;
+            if(p1 < p2){
+                parent[p2] = p1;
+            }else{
+                parent[p1] = p2;
+            }
+            return;
+        }
+    }
+
+    public String smallestEquivalentString(String s1, String s2, String baseStr) {
+        DSU set = new DSU(26);
+        for(int i=0; i<s1.length(); i++){
+            char ch1 = s1.charAt(i);
+            char ch2 = s2.charAt(i);
+            if(set.find(ch1 - 'a') == set.find(ch2 - 'a')){
+                continue;
+            }
+            set.union(ch1 - 'a',ch2 - 'a');
+        }
+        StringBuilder ans = new StringBuilder("");
+        for(int i=0;i<baseStr.length();i++){
+            char ch=baseStr.charAt(i);
+            ans.append((char)('a' + set.find(ch - 'a')));
+        }
+        return ans.toString();
+    }
+}

@@ -1,0 +1,28 @@
+class Solution {
+    public int mostFrequentEven(int[] nums) {
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int ele:nums){
+            if(ele%2==0){
+                hm.put(ele,hm.getOrDefault(ele,0)+1);
+            }
+        }
+        int currSmallest=Integer.MAX_VALUE;
+        int currSmallestFreq=Integer.MIN_VALUE;
+        for(int key:hm.keySet()){
+            int currFreq=hm.get(key);
+            if(currFreq>currSmallestFreq){
+                currSmallest=key;
+                currSmallestFreq=currFreq;
+            }else if(currFreq==currSmallestFreq){
+                if(key<currSmallest){
+                    currSmallest=key;
+                    currSmallestFreq=currFreq;
+                } 
+            }
+        }
+        if(currSmallest==Integer.MAX_VALUE){
+            return -1;
+        }
+        return currSmallest;
+    }
+}

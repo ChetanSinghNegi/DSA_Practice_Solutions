@@ -1,0 +1,35 @@
+
+class Solution
+{
+	public long getCount(int N)
+	{
+		// Your code goes here
+		int[][] keypad= {{0, 1, 2},{3, 4, 5},{6, 7, 8},{10, 9, 10}};
+		long[][] dp = new long[N + 1][12];
+		long tCount = 0;
+		for(int i = 0;i < 12; i++){
+		    int row = i / 3;
+		    int col = i % 3;
+		    if(row == 3 &&(col == 0 || col == 2)) continue;
+		    long currCount = helper(row, col, N, dp,keypad);
+		    tCount += currCount;
+		}
+		return tCount;
+	}
+	
+	public long helper(int row, int col, int n, long[][] dp, int[][] keypad){
+	    if(row == 4 || col == 3 || row < 0 || col < 0 || keypad[row][col] == 10) return 0l;
+	    if(n == 1) return 1l;
+	    
+	    int currNumber = row * 3 + col;
+	    if(dp[n][currNumber] != 0) return dp[n][currNumber];
+	    long self = helper(row, col, n - 1, dp, keypad);
+	    long top = helper(row - 1, col, n - 1, dp, keypad);
+	    long right = helper(row, col+1, n - 1, dp, keypad);
+	    long down = helper(row+1, col, n - 1, dp, keypad);
+	    long left = helper(row, col - 1, n - 1, dp, keypad);
+	    dp[n][currNumber] = self + top + right + down + left;
+	    return dp[n][currNumber];
+	    
+	}
+}

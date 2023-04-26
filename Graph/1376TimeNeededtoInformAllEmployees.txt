@@ -1,0 +1,44 @@
+class Solution {
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        Graph g=new Graph(n);
+        int managerTime=0;
+        for(int i=0;i<n;i++){
+            if(i == headID){
+                managerTime=informTime[i];
+                continue;
+            } 
+            g.addEdge(manager[i],i,informTime[i]);
+        }
+        return g.DFS(headID,managerTime);
+    }
+}
+public class Pair{
+    int subOrd;
+    int timeReq;
+    Pair(int s,int t){
+        this.subOrd=s;
+        this.timeReq=t;
+    }
+}
+class Graph{
+    ArrayList<Pair>[] adj;
+    Graph(int n){
+        adj=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            adj[i]=new ArrayList<>();
+        }
+    }
+    public void addEdge(int src,int dest,int timeReq){
+        adj[src].add(new Pair(dest,timeReq));
+    }
+
+    public int DFS(int headID,int time){
+
+        int maxSubOrdTime=time;
+        for(Pair subs:adj[headID]){
+            int subOrdTime=DFS(subs.subOrd,time + subs.timeReq);
+            maxSubOrdTime=Math.max(maxSubOrdTime,subOrdTime);
+        }
+        return maxSubOrdTime;
+    }
+}

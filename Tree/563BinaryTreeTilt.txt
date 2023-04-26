@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int tilt;
+    public int findTilt(TreeNode root) {
+        tilt=0;
+        findTiltHelper(root);
+        return tilt;
+    }
+    public int findTiltHelper(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        
+        int lSum=findTiltHelper(root.left);
+        int rSum=findTiltHelper(root.right);
+
+        //finding curr tilt and adding to global tilt
+        int currTilt=Math.abs(lSum-rSum);
+        tilt+=currTilt;
+
+        //returning our Value+ left tree sum+ right tree sum
+        return lSum+rSum+root.val;
+    }
+}

@@ -1,0 +1,46 @@
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        boolean valid=helper(0,0,board);
+        return valid;
+    }
+    public boolean helper(int sr,int sc,char[][] board){
+        if(sr==9){
+            return true;
+        }
+        int newRow=(sc==8)?sr+1:sr;
+        int newCol=(sc==8)?0:sc+1;
+        if(board[sr][sc]!='.'){
+            boolean valid=isSafe(sr,sc,board,board[sr][sc]);
+            if(!valid){
+                return false;
+            }
+        }
+        return helper(newRow,newCol,board);
+    }
+    public boolean isSafe(int sr,int sc,char[][] board,char ch){
+        //row Check
+        for(int i=0;i<9;i++){
+            if(board[i][sc]==ch && i!=sr){
+                return false;
+            }
+        }
+        //col Check
+        for(int i=0;i<9;i++){
+            if(board[sr][i]==ch && i!=sc){
+                return false;
+            }
+        }
+        //subMatrixCheck
+        int stRowSubMatrix=(sr/3) * 3;
+        int stColSubMatrix=(sc/3) * 3;
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                if(board[stRowSubMatrix + i][stColSubMatrix + j]==ch 
+                    && stRowSubMatrix + i!=sr && stColSubMatrix + j !=sc){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }   
+}

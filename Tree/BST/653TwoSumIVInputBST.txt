@@ -1,0 +1,26 @@
+class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+
+        return findFirst(root,root,k);
+        
+    }
+
+    public boolean findFirst(TreeNode root,TreeNode node,int target){
+        if(node==null) return false;
+
+        boolean currFind=findSecond(root,node,target-node.val);
+        if(currFind==true) return true;
+
+        return findFirst(root,node.left,target) || findFirst(root,node.right,target);
+    }
+
+
+
+    public boolean findSecond(TreeNode root,TreeNode node,int target){
+        if(root==null) return false;
+
+        if(root.val==target && root!=node) return true;
+        else if(root.val>target) return findSecond(root.left,node,target);
+        else return findSecond(root.right,node,target);
+    }
+}

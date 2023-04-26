@@ -1,0 +1,30 @@
+class Solution {
+    List<String> ans;
+    public List<String> restoreIpAddresses(String s) {
+        ans=new ArrayList<>();
+        helper(s,1,"");
+        return ans;
+    }
+    public void helper(String s,int count,String output){
+        if(s.length() == 0 || count >= 5){
+            if(s.length()==0 && count==5){
+                ans.add(output.substring(1));
+            }
+            return ;
+        }
+        int num=s.charAt(0)-'0';
+        helper(s.substring(1),count+1,output+"."+num);
+        if(num==0) return;
+        if(s.length()>=2){
+            num=num*10+(s.charAt(1)-'0');
+            helper(s.substring(2),count+1,output+"."+num);
+        }
+        if(s.length()>=3){
+            num=num*10+(s.charAt(2)-'0');
+            if(num<=255){
+                helper(s.substring(3),count+1,output+"."+num);
+            }
+        }
+        return;
+    }
+}

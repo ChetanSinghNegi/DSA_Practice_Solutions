@@ -1,0 +1,39 @@
+class Solution {
+    public class Pair implements Comparable<Pair>{
+        int node,weight;
+        Pair(int node,int weight){
+            this.node=node;
+            this.weight=weight;
+        }
+        public int compareTo(Pair other){
+            return this.weight - other.weight;
+        }
+    }
+    public int networkDelayTime(int[][] times, int n, int k) {
+        ArrayList<Pair>[] graph=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            graph[i]=new ArrayList<Pair>();
+        }
+        for(int i=0;i<times.length;i++){
+            graph[times[i][0]-1].add(new Pair(times[i][1] - 1,times[i][2]));
+        }
+        PriorityQueue<Pair> q=new PriorityQueue<>();
+        int[] vis=new int[n];
+        Arrays.fill(vis,-1);
+        q.add(new Pair(k-1,0));
+        while(q.size()>0){
+            Pair rem=q.remove();
+            if(vis[rem.node]!=-1) continue;
+            vis[rem.node]=rem.weight;
+            for(Pair nbr:graph[rem.node]){
+                q.add(new Pair(nbr.node,rem.weight+nbr.weight));
+            }
+        }
+        int min=vis[k-1];
+        for(int i=0;i<n;i++){
+            if(vis[i]==-1) return -1;
+            min=Math.max(min,vis[i]);
+        }
+        return min;
+    }
+}

@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public class Mover{
+        int max;
+        int min;
+        int sum;
+        boolean isBST;
+        Mover(int max,int min,int sum,boolean isBST){
+            this.max=max;
+            this.min=min;
+            this.sum=sum;
+            this.isBST=isBST;
+        }
+    }
+    static int maxSum;
+    public int maxSumBST(TreeNode root) {
+        maxSum=0;
+        Mover m=maxSumBSTHelper(root);
+        return maxSum;
+    }
+    public Mover maxSumBSTHelper(TreeNode root){
+        if(root==null){
+            return new Mover(Integer.MIN_VALUE,Integer.MAX_VALUE,0,true);
+        }
+        Mover left=maxSumBSTHelper(root.left);
+        Mover right=maxSumBSTHelper(root.right);
+        Mover curr=new Mover(Integer.MIN_VALUE,Integer.MAX_VALUE,0,true);
+        if(left.isBST==false || right.isBST==false || root.val<=left.max || root.val>=right.min)    {
+            curr.isBST=false;
+            return curr;
+        }
+        curr.max=Math.max(left.max,Math.max(right.max,root.val)); 
+        curr.min=Math.min(left.min,Math.min(right.min,root.val));
+        curr.isBST=true; 
+        curr.sum=left.sum+right.sum+root.val;
+        if(curr.sum>maxSum){
+            maxSum=curr.sum;
+        }
+        return curr;
+    }
+}

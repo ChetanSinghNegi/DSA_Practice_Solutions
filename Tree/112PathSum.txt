@@ -1,0 +1,24 @@
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        boolean isFound=helper(root,0,targetSum);
+        return isFound;
+    }
+    
+    public boolean helper(TreeNode root,int currSum,int targetSum){
+        if(root==null){
+            return false;
+        }
+        currSum+=root.val;
+        if(root.left==null && root.right==null){
+            if(currSum==targetSum) return true;
+            return false;
+        }
+
+        boolean lFound=helper(root.left,currSum,targetSum);
+        if(lFound==true) return true;
+        boolean rFound=helper(root.right,currSum,targetSum);
+        if(rFound==true) return true;
+        
+        return false;
+    }
+} 

@@ -1,0 +1,80 @@
+
+class Solution 
+{ 
+    //Function to return max value that can be put in knapsack of capacity W.
+    static int knapSack(int W, int wt[], int val[], int n) 
+    { 
+         // your code here 
+         int[][] dp = new int[W + 1][n];
+         for(int i = 0;i<=W; i++){
+             Arrays.fill(dp[i],-1);
+         }
+         int ans = helper(0, W, wt, val, dp);
+         return ans != -1? ans:0;
+    } 
+    
+    public static int helper(int idx, int capacity, int[] wt, int[] val,int[][] dp){
+        if(capacity < 0) return -1;
+        if(idx == wt.length || capacity == 0) return 0;
+        
+        if(dp[capacity][idx] != -1) return dp[capacity][idx];
+        
+        int ans1 = (capacity >= wt[idx]) ?
+            helper(idx + 1, capacity - wt[idx], wt, val, dp) + val[idx]:-1;
+        int ans2 = helper(idx + 1, capacity, wt, val, dp);
+        
+        dp[capacity][idx] = Math.max(ans1,ans2);
+        
+        return dp[capacity][idx] ;
+        
+    }
+}
+
+//tabulation O(amount * wt.length) S(amount * wt.length)
+class Solution 
+{ 
+    //Function to return max value that can be put in knapsack of capacity W.
+    static int knapSack(int W, int wt[], int val[], int n) 
+    { 
+         // your code here 
+        int[][] dp = new int[W + 1][n + 1];
+        for(int i = 1; i<=n; i++){
+            for(int j = 1; j<=W; j++){
+                int yes = 0;
+                if(j >= wt[i - 1]){
+                    yes = val[i - 1] + dp[j - wt[i - 1]][i - 1];
+                }
+                int no = dp[j][i - 1];
+                dp[j][i] = Math.max(yes, no);
+            }
+        }
+        return dp[W][n];
+    }
+}
+
+//optimized tabulation O(amount * wt.length) S(1)
+class Solution 
+{ 
+    //Function to return max value that can be put in knapsack of capacity W.
+    static int knapSack(int W, int wt[], int val[], int n) 
+    { 
+         // your code here 
+        int[] dp = new int[W + 1];
+        for(int i = 0; i<n; i++){
+            int[] currDp = new int[W + 1];
+            for(int j = 1; j<=W; j++){
+                int yes = 0;
+                if(j >= wt[i]){
+                    yes = val[i] + dp[j - wt[i]];
+                }
+                int no = dp[j];
+                currDp[j] = Math.max(yes, no);
+            }
+            dp = currDp;
+        }
+        return dp[W];
+        
+    }
+}
+
+

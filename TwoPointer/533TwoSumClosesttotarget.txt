@@ -1,0 +1,27 @@
+public class Solution {
+    /**
+     * @param nums: an integer array
+     * @param target: An integer
+     * @return: the difference between the sum and the target
+     */
+    public int twoSumClosest(int[] nums, int target) {
+        // write your code here
+        Arrays.sort(nums);
+        int i=0;
+        int j=nums.length-1;
+        int closest=Integer.MAX_VALUE;    
+        while(i<j){
+            int currSum=nums[i]+nums[j];
+            if(currSum>target){
+                closest=Math.min(closest,currSum-target);
+                j--;
+            }else if(currSum<target){
+                closest=Math.min(closest,target-currSum);
+                i++;
+            }else{
+                return 0;
+            }
+        }
+        return closest;
+    }
+}

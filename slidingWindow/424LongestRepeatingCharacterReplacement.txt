@@ -1,0 +1,26 @@
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int maxLength=0;
+        for(int i=0;i<26;i++){
+            int currIdx=i;
+            char ch=(char)('A' + currIdx);
+            int changeCount=0;
+            int left=0,right=0,currLength=0;
+            while(right<s.length()){
+                char currChar=s.charAt(right);
+                if(currChar!=ch){
+                    changeCount++;
+                }
+                while(changeCount>k){
+                    char leftChar=s.charAt(left);
+                    if(leftChar!=ch) changeCount--;
+                    left++;
+                }
+                maxLength=Math.max(maxLength,right-left+1);
+                right++;
+            }
+        }
+        return maxLength;
+
+    }
+}

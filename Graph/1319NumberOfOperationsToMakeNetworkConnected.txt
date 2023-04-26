@@ -1,0 +1,45 @@
+class Solution {
+    public int makeConnected(int n, int[][] connections) {
+        if(connections.length<n-1) return -1;
+        Graph g=new Graph(n);
+        for(int i=0;i<connections.length;i++){
+            g.addEdge(connections[i][0],connections[i][1]);
+        }
+        return g.DFS() - 1;
+    }
+}
+
+class Graph{
+    ArrayList<Integer>[] adj;
+    Graph(int n){
+        adj=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            adj[i]=new ArrayList<>();
+        }
+    }
+    void addEdge(int src,int dest){
+        adj[src].add(dest);
+        adj[dest].add(src);
+    }
+
+    void DFS(int src,boolean [] vis){
+        if(vis[src]==true) return;
+
+        vis[src]=true;
+        for(int nbr:adj[src]){
+            if(vis[nbr]==false) DFS(nbr,vis);
+        } 
+    }
+
+    int DFS(){
+        boolean[] vis=new boolean[adj.length];
+        int count=0;
+        for(int i=0;i<adj.length;i++){
+            if(vis[i]==false){
+                count++;
+                DFS(i,vis);
+            }
+        }
+        return count;
+    }
+}

@@ -1,0 +1,15 @@
+class Solution {
+    public int countKDifference(int[] nums, int k) {
+        HashMap<Integer,Integer> freq=new HashMap<>();
+        for(int i:nums){
+            freq.put(i,freq.getOrDefault(i,0)+1);
+        }
+        int count=0;
+        for(int key:freq.keySet()){
+            int val1=freq.get(key);
+            int val2=freq.getOrDefault(key+k,0);
+            count+=val1*val2;
+        }
+        return count;
+    }
+}

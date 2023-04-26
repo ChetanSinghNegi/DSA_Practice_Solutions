@@ -1,0 +1,21 @@
+class Solution {
+    static Long numberOfWays(int n) {
+        // code here
+        if(n == 0) return 0l;
+        long[] dp = new long[n + 1];
+        Arrays.fill(dp,-1);
+        long ans = helper(n, dp);
+        return ans;
+    }
+    
+    static long helper(int tiles, long[] dp){
+        if(tiles == 0) return 1l;
+        if(tiles < 0) return 0l;
+        
+        if(dp[tiles] != -1) return dp[tiles];
+        long count1 = helper(tiles - 1, dp);
+        long count2 = helper(tiles - 2, dp);
+        dp[tiles] = (count1 + count2)% 1000000007;
+        return dp[tiles];
+    }
+};

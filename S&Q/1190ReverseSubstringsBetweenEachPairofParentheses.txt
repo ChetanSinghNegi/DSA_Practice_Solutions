@@ -1,0 +1,29 @@
+class Solution {
+    public String reverseParentheses(String s) {
+        Stack<StringBuilder> ans=new Stack<>();
+        StringBuilder res=new StringBuilder("");
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+
+            //storing till ans in ansStack
+            if(ch=='('){
+                ans.push(res);
+                res=new StringBuilder("");
+            }
+            
+            //reverse current string and append to till ans top(ans.pop());
+            else if(ch==')'){
+                StringBuilder curr=new StringBuilder(ans.pop());
+                res.reverse();
+                curr.append(res);
+                res=curr;
+            }
+            
+            //current string which might need to reverse later
+            else{
+                res.append(ch);
+            }
+        }
+        return res.toString();
+    }
+}

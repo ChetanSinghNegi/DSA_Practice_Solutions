@@ -1,0 +1,27 @@
+//memoization O(n) S(n)
+class Solution
+{
+    public long countFriendsPairings(int n) 
+    { 
+       //code here
+       if(n == 0) return 0;
+       long[] dp = new  long[n + 1];
+       Arrays.fill(dp, -1);
+       return helper(n,dp);
+    }
+    
+    static long mod = 1000000007;
+    
+    public long helper(int n, long[] dp){
+        if(n == 0) return 1l;
+        if(n < 0) return 0l;
+        
+        if(dp[n] != -1) return dp[n];
+        long ans1 = helper(n - 1, dp) % mod;
+        long ans2 = ((n - 1) * helper(n - 2, dp)) % mod;
+        
+        dp[n] = (ans1 + ans2) % mod;
+        return dp[n];
+    }
+}    
+ 

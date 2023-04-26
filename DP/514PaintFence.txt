@@ -1,0 +1,83 @@
+//tabulation O(n) S(n)
+public class Solution {
+    /**
+     * @param n: non-negative integer, n posts
+     * @param k: non-negative integer, k colors
+     * @return: an integer, the total number of ways
+     */
+    public int numWays(int n, int k) {
+        // write your code here
+        if(n == 0) return 0;
+        if(n == 1) return k;
+
+        //dp[i][0]  = no of ways to paint i post such that last two post(i,i-1) has same color
+        //dp[i][1]  = no of ways to paint i post such that last two post(i,i-1) has different color
+        int[][] dp = new int[n + 1][2];
+        dp[2][0] = k;
+        dp[2][1] = k * (k-1);
+        for(int i=3; i <= n; i++){
+            dp[i][0] = dp[i - 1][1];
+            dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k-1);
+        } 
+
+        return dp[n][0] + dp[n][1];
+    }
+}
+
+//tabulation Optimized O(n) S(1)
+public class Solution {
+    /**
+     * @param n: non-negative integer, n posts
+     * @param k: non-negative integer, k colors
+     * @return: an integer, the total number of ways
+     */
+    public int numWays(int n, int k) {
+        // write your code here
+        if(n == 0) return 0;
+        if(n == 1) return k;
+
+        //prevSame  = no of ways to paint i-1th post such that last two post(i-1,i-2) has same color
+        //prevDiff  = no of ways to paint i-1th post such that last two post(i-1,i-2) has different color
+        int prevSame = k;
+        int prevDiff = k * (k-1);
+        for(int i=3; i <= n; i++){
+            int newSame = prevDiff;
+            prevDiff = (prevSame + prevDiff) * (k-1);
+            prevSame = newSame;
+        } 
+
+        return prevSame + prevDiff;
+    }
+}
+
+//memoization code (stack overflow due to JAVA)
+public class Solution {
+    /**
+     * @param n: non-negative integer, n posts
+     * @param k: non-negative integer, k colors
+     * @return: an integer, the total number of ways
+     */
+    public int numWays(int n, int k) {
+        // write your code here
+        if(n == 0) return 0;
+        if(n == 1) return k;
+        if(n == 2) return k*k;
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp,-1);
+        dp[0] = 0;
+        dp[1] = k;
+        dp[2] = k * k;
+        
+        helper(n, k, dp);
+
+        return dp[n];
+    }
+    public int helper(int idx, int colors, int[] dp){
+        if(dp[idx] != -1) return dp[idx];
+        int ans1 = helper(idx - 2, colors, dp) * (colors - 1);
+        int ans2 = helper(idx - 1, colors, dp) * (colors - 1);
+        dp[idx] = ans1 + ans2;
+        return ans1 + ans2;
+    }
+}

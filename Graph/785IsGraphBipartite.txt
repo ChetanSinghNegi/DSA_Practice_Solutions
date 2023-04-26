@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int n=graph.length;
+        int[] vis=new int[n];
+        Arrays.fill(vis,-1);
+        for(int src=0;src<n;src++){
+            if(vis[src]==-1){
+                if(DFS(src,0,vis,graph)==false) return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean DFS(int src,int level,int[] vis, int[][] graph){
+        if(vis[src]!=-1){
+            if(vis[src]!=level%2) return false;
+            return true;
+        }
+
+        vis[src]=level%2;
+        for(int i=0;i<graph[src].length;i++){
+            int nbr=graph[src][i];
+            if(DFS(nbr,level+1,vis,graph)==false) return false;
+        }
+        return true;
+    }
+}

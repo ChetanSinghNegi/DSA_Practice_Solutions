@@ -1,0 +1,22 @@
+class Solution {
+  public List<List<Integer>> combine(int n, int k) {
+      List<List<Integer>> combinations=new ArrayList<>();
+      List<Integer> combination=new ArrayList<>();
+      combineHelper(combinations,combination,k,1,n);
+      return combinations;
+  }
+  public void combineHelper(List<List<Integer>> combinations 
+  ,List<Integer> combination,int k,int level,int n){
+      if(level==n+1){
+          if(combination.size()==k){
+              List<Integer> copied=new ArrayList<>(combination);
+              combinations.add(copied);
+          }
+          return;
+      }
+      combination.add(level);
+      combineHelper(combinations,combination,k,level+1,n); //adding level call 
+      combination.remove(combination.size()-1);
+      combineHelper(combinations,combination,k,level+1,n);  //without level adding call
+  }
+}

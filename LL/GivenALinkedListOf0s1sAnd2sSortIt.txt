@@ -1,0 +1,35 @@
+class Solution
+{
+    //Function to sort a linked list of 0s, 1s and 2s.
+    static Node segregate(Node head)
+    {
+        // add your code here
+        Node zeroSorted=partition(head,1);
+        Node oneSorted=partition(zeroSorted,2);
+        return oneSorted;
+    }
+    
+    static Node partition(Node head, int x) {
+        Node dummyLeft=new Node(-1);
+        Node leftTail=dummyLeft;
+        Node dummyRight=new Node(-1);
+        Node rightTail=dummyRight;
+        Node temp=head;
+        while(temp!=null){
+            int currVal=temp.data;
+            if(currVal<x){
+                leftTail.next=temp;
+                leftTail=leftTail.next;
+            }else{
+                rightTail.next=temp;
+                rightTail=rightTail.next;
+            }
+            temp=temp.next;
+        }
+        leftTail.next=dummyRight.next;
+        rightTail.next=null;
+        return dummyLeft.next;
+    }
+}
+
+

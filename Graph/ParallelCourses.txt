@@ -1,0 +1,55 @@
+import java.util.*;
+public class Solution {
+
+    public static int parallelCourses(int n, int[][] prerequisites) {
+        // Write your code here
+        ArrayList<ArrayList<Integer>> adj=new ArrayList<>(n);
+        for(int i=0;i<n;i++){
+            ArrayList<Integer> a=new ArrayList<>();
+            adj.add(a);
+        }
+        for(int i=0;i<prerequisites.length;i++){
+            adj.get(prerequisites[i][0]-1).add(prerequisites[i][1]-1);
+        }
+        return kahn(n,adj);
+        
+    }
+
+    public static int kahn(int V,ArrayList<ArrayList<Integer>> adj){
+        
+        // outgoing edges freq of nodes array 
+        int[] inc=new int[V];
+        for(int i=0;i<V;i++){
+            for(int nbr:adj.get(i)){
+                inc[nbr]++;
+            }
+        }
+        Queue<Integer> q=new ArrayDeque<>();
+        for(int i=0;i<V;i++){
+            if(inc[i]==0){
+                q.add(i);
+            }
+        }
+        
+        //eleminating incoming edges from remove node
+
+        int level=0;
+        int totalEle=0;
+        while(q.size()>0){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                int rem=q.remove();
+                totalEle++;
+                for(int nbr:adj.get(rem)){
+                    inc[nbr]--;
+                    if(inc[nbr]==0){
+                        q.add(nbr);
+                    }
+                }
+            }
+            level++;
+        }
+        if(totalEle == V) return level;
+        return -1;
+    }
+}

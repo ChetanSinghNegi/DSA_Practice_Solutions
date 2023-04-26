@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    int ans;
+    public int pathSum(TreeNode root, int targetSum) {
+        ans=0;
+        RootNode(root,targetSum);
+        return ans;
+    }
+
+    public void RootNode(TreeNode root,int targetSum){
+        if(root==null) return;
+
+        //how many path sum from this root
+        helper(root,0,targetSum);
+
+        //asking for childs to check from there if there path sum exist?
+        RootNode(root.left,targetSum);
+        RootNode(root.right,targetSum);
+    }
+
+    public void helper(TreeNode root,long currSum,int targetSum){
+        if(root==null){
+            return;
+        }
+        
+        currSum+=root.val;                  
+        
+        if(currSum==targetSum){
+            ans++;   
+        }
+
+        helper(root.left,currSum,targetSum);
+        helper(root.right,currSum,targetSum);
+        return;
+    }
+}

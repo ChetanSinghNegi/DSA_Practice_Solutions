@@ -1,0 +1,47 @@
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode l1Reversed=reverseList(l1);  //reversing number1
+        ListNode l2Reversed=reverseList(l2);  //reversing number2
+        ListNode addedNode=addTwoNumbersFront(l1Reversed,l2Reversed);   //adding both reverse numbers from front
+        ListNode ans=reverseList(addedNode);  //reversing ans
+        return ans;
+    }
+
+    public ListNode addTwoNumbersFront(ListNode l1, ListNode l2) {
+        ListNode ans=new ListNode(-1);
+        ListNode ansHead=ans;
+        int carry=0;
+        while(l1!=null || l2!=null || carry!=0){
+            int sum=carry;
+            if(l1!=null){
+                sum+=l1.val;
+                l1=l1.next;
+            }
+            if(l2!=null){
+                sum+=l2.val;
+                l2=l2.next;
+            }
+            carry=sum/10;
+            ListNode curr=new ListNode(sum%10);
+            ans.next=curr;
+            ans=ans.next;
+        }
+        return ansHead.next; 
+    }
+
+    public ListNode reverseList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode pre=null;
+        ListNode curr=head;
+        while(curr!=null){
+            ListNode post=curr.next;
+            curr.next=pre;
+            pre=curr;
+            curr=post;
+        }
+        head=pre;
+        return head;
+    }
+}

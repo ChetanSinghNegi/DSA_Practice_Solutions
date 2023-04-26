@@ -1,0 +1,27 @@
+class Solution {
+  public double myPow(double x, int n) {
+    double ans = helper(x, n);
+    if (n < 0)
+      ans = 1 / ans;
+    return ans;
+
+  }
+
+  public double helper(double x, int n) {
+    if (n == 0)
+      return (double) 1;
+    if (n == 1)
+      return x;
+
+    double ans;
+    if (n % 2 == 0) {
+      double even = helper(x, n / 2);
+      ans = even * even;
+    } else {
+      double odd = helper(x, n / 2);
+      ans = odd * odd * x;
+    }
+    return ans;
+
+  }
+}

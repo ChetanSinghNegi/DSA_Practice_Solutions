@@ -1,0 +1,80 @@
+//method m1 == my method fast but little unclean and big  (HashMap method)
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if(s1.length()>s2.length()){
+            return false;
+        }
+        HashMap<Character,Integer> strHm=new HashMap<>();
+        HashMap<Character,Integer> wdHm=new HashMap<>();
+        for(int i=0;i<s1.length();i++){
+            char ch=s1.charAt(i);
+            strHm.put(ch,strHm.getOrDefault(ch,0)+1);
+        }
+        int window=s1.length();
+        for(int i=0;i<window;i++){
+            char ch=s2.charAt(i);
+            wdHm.put(ch,wdHm.getOrDefault(ch,0)+1);
+        }
+        boolean check=checkingSame(strHm,wdHm);
+        if(check) return true;
+        for(int i=window;i<s2.length();i++){
+            char preCh=s2.charAt(i-window);
+            int preVal=wdHm.get(preCh);
+            if(preVal==1){
+                wdHm.remove(preCh);
+            }else{
+                wdHm.put(preCh,preVal-1);
+            }
+            char currCh=s2.charAt(i);
+            wdHm.put(currCh,wdHm.getOrDefault(currCh,0)+1);
+            check=checkingSame(strHm,wdHm);
+            if(check) return true;
+        }
+        return false;
+    }
+    public boolean checkingSame(HashMap<Character,Integer> hm1,HashMap<Character,Integer> hm2){
+        for(char ch:hm1.keySet()){
+            int val1=hm1.get(ch);
+            int val2=hm2.getOrDefault(ch,0);
+            if(val1!=val2){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+
+Method m2=Archit's method clean code (frequencyArray Method)  
+class Solution {
+    public boolean isEqual(int[] a, int[] b) {
+        for (int i = 0; i < 26; i++) {
+            if (a[i] != b[i])
+                return false;
+        }
+        return true;
+    }
+
+    public boolean checkInclusion(String s1, String s2) {
+        int[] reqFreq = new int[26];  //frequency array
+        int window = s1.length();
+
+        for (int i = 0; i < window; i++)
+            reqFreq[s1.charAt(i) - 'a']++;
+
+        int[] currFreq = new int[26];
+        for (int i = 0; i < s2.length(); i++) {
+            currFreq[s2.charAt(i) - 'a']++;
+
+            if (i >= window) {    //removing previous i-window idx char frequency
+                currFreq[s2.charAt(i - window) - 'a']--;
+            }
+
+            if (isEqual(reqFreq, currFreq) == true) {   //checking at every iteration
+                return true;
+            }
+        }
+        return false;
+    }
+}

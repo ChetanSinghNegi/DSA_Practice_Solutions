@@ -1,0 +1,29 @@
+class Solution {
+  public int mincostTickets(int[] days, int[] costs) {
+    int n = days.length;
+    int dpLen = days[n-1] + 1;
+    
+    // dp[i] = min cost to travel till ith days
+    int[] dp = new int[dpLen];
+    
+    //visited for knowing is it valid to travel in this day or not? 
+    // We could take hashset of days also as a visited
+    boolean[] vis = new boolean[dpLen];
+
+    for(int day:days){
+      vis[day] = true;
+    }
+    for(int i=1;i<dpLen;i++){
+      if(vis[i] == false){
+        dp[i] = dp[i-1];
+        continue;
+      }else{
+        dp[i] = dp[i-1] + costs[0];
+        dp[i] = Math.min(dp[i] , dp[Math.max(i-7,0)] + costs[1]);
+        dp[i] = Math.min(dp[i] , dp[Math.max(i-30,0)] + costs[2]);
+      }
+    }
+    return dp[dpLen - 1];
+
+  }
+}

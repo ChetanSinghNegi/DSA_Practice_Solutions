@@ -1,0 +1,50 @@
+//memoization O(n) S(n)
+class Solution
+{
+    public int countWays(int n, int m)
+    {
+        // Code here
+        if(n == 0) return 0;
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp,-1);
+        int ans = helper(n, m, dp);
+        return ans;
+    }
+    
+    static int helper(int lenLeft, int totalWidth, int[] dp){
+        if(lenLeft < 0) return 0;
+        if(lenLeft == totalWidth) return 2;
+        if(lenLeft < totalWidth) return 1;
+        
+        if(dp[lenLeft] != -1) return dp[lenLeft];
+        int count1 = helper(lenLeft - 1, totalWidth, dp);
+        int count2 = helper(lenLeft - totalWidth, totalWidth, dp);
+        dp[lenLeft] = (count1 + count2)% 1000000007;
+        return dp[lenLeft];
+    }
+}
+
+
+//space optimized O(n) S(1)
+class Solution
+{
+    public int countWays(int n, int m)
+    {
+        // Code here
+        if(n<m) return 1;
+        if(n == m) return 2;
+        
+        Deque<Integer> dq = new ArrayDeque<>();
+        for(int i = 1;i < m; i++){
+            dq.add(1);
+        }
+        dq.add(2);
+        int mod = 1000000007;
+        for(int i = m+1; i <= n; i++){
+            int currAns = (dq.getFirst() + dq.getLast()) % mod;
+            dq.removeFirst();
+            dq.addLast(currAns);
+        }
+        return dq.getLast();
+    }
+}

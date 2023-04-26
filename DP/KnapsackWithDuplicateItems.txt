@@ -1,0 +1,80 @@
+//Good Memoization1 O(items.length * cap ) S(items.length * cap)
+class Solution{
+    static int knapSack(int n, int cap, int val[], int wt[])
+    {
+        // code here
+        int[][] dp = new int[cap + 1][wt.length];
+        for(int i=0;i<=cap;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        int ans = helper(0, cap, dp, val, wt);
+        if(ans == -1) return 0;
+        return ans;
+    }
+    
+    public static int helper(int idx, int cap, int[][] dp, int[] val, int[] wt){
+        if(idx == wt.length || cap == 0) return 0;
+        
+        if(dp[cap][idx] != -1) return dp[cap][idx];
+        
+        int currProfit = helper(idx + 1, cap, dp, val, wt);
+        
+        if(cap >= wt[idx]){
+            currProfit = Math.max(currProfit,helper(idx, cap - wt[idx], dp, val, wt) + val[idx]);
+        }
+        dp[cap][idx] = currProfit;
+        return currProfit;
+    }
+}
+
+//BAD Memoization2 O(items.length * items.length * cap) S(items.length * cap)
+class Solution{
+    static int knapSack(int n, int w, int val[], int wt[])
+    {
+        // code here
+        int[][] dp = new int[w + 1][wt.length];
+        for(int i=0;i<=w;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        int ans = helper(0, w, dp, val, wt);
+        if(ans == Integer.MIN_VALUE) return 0;
+        return ans;
+    }
+    
+    public static int helper(int idx, int cap, int[][] dp, int[] val, int[] wt){
+        if(idx == wt.length) return 0;
+        
+        if(dp[cap][idx] != -1) return dp[cap][idx];
+        
+        int factor = 0;
+        int currProfit = Integer.MIN_VALUE;
+        while(cap >= wt[idx] * factor){
+            int child = helper(idx + 1,cap - wt[idx] * factor, dp, val, wt);
+            currProfit = Math.max(currProfit, child + val[idx] * factor);
+            factor++;
+        }
+        dp[cap][idx] = currProfit;
+        return currProfit;
+    }
+}
+
+//(BEST) Optimized tabulation O(capacity * items.length) S(capacity)
+class Solution{
+    static int knapSack(int n, int cap, int val[], int wt[])
+    {
+        // code here
+        int[] dp = new int[cap + 1];
+        
+        for(int i=0; i < n; i++){
+            int[] currRowDP = new int[cap + 1];
+            for(int c=1;c <= cap; c++){
+                int no = dp[c];
+                int yes = (c >= wt[i])?currRowDP[c - wt[i]] + val[i]:0;
+                currRowDP[c] = Math.max(yes, no);
+            }
+            dp = currRowDP;
+        }
+        
+        return dp[cap];
+    }
+}

@@ -1,0 +1,33 @@
+public class Solution {
+    public int solve(int[] a) {
+        int n=a.length;
+        if(n<3){
+            return 0;
+        }
+        TreeSet<Integer> set=new TreeSet<>(); 
+        int[] suffixMax=new int[n];
+        int max=Integer.MIN_VALUE;
+        for(int i=n-1;i>=0;i--){
+            if(a[i]>max){
+                max=a[i];
+            }
+            suffixMax[i]=max;
+        }
+        int maxSum=0;
+        set.add(a[0]);
+        for(int i=1;i<n-1;i++){
+            int curr=a[i];
+            Integer prev=set.lower(curr);
+            int next=suffixMax[i+1];
+            if(prev!=null && prev<curr && curr<next){
+                int currSum=prev+curr+next;
+                if(currSum>maxSum){
+                    maxSum=currSum;
+                }
+            }
+            set.add(a[i]);
+        }
+        return maxSum;
+        
+    }
+}

@@ -1,0 +1,33 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        
+        //max Profit if current idx or prev indexes as a potential selling day
+        int[] left = new int[n];
+        int smallEle = prices[0];
+        int beforeProfit = 0;
+        for(int i = 1; i < n; i++){
+            smallEle = Math.min(prices[i], smallEle);
+            beforeProfit = Math.max(beforeProfit, prices[i] - smallEle);
+            left[i] = beforeProfit;
+        }
+
+        //max Profit if current idx or next indexes as a potential buying day
+        int[] right = new int[n];
+        int largeEle = prices[n - 1];
+        int afterProfit = 0;
+        for(int i = n - 1; i >= 0; i--){
+            largeEle = Math.max(prices[i], largeEle);
+            afterProfit = Math.max(afterProfit, largeEle - prices[i]);
+            right[i] = afterProfit;
+        }
+
+        // finding maxProfit 
+        int maxProfit = 0;
+        for(int i = 0; i < n; i++){
+            maxProfit = Math.max(maxProfit, left[i] + right[i]);
+        }
+        return maxProfit;
+
+    }
+}

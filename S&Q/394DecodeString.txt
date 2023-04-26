@@ -1,0 +1,43 @@
+class Solution {
+    public String decodeString(String s) {
+        Stack<Integer> iter=new Stack<>();
+        Stack<StringBuilder> ans=new Stack<>();
+        StringBuilder res=new StringBuilder("");
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+
+            //push till ans to ansStack
+            if(ch=='['){
+                ans.push(res);
+                res=new StringBuilder("");
+            }
+            
+            // save digits in digitsStack
+            else if(Character.isDigit(ch)==true){
+                int k=0;
+                while(Character.isDigit(s.charAt(i))==true){
+                    k=k*10+(s.charAt(i)-'0');
+                    i++;
+                }
+                i--;
+                iter.push(k);
+            }
+            
+            //pop till ans and repeat current string which needs to be repeated k(=iter.pop()) times
+            else if(ch==']'){
+                int k=iter.pop();
+                StringBuilder curr=new StringBuilder(ans.pop());
+                for(int j=0;j<k;j++){
+                    curr.append(res);
+                }
+                res=curr;
+            }
+            
+            //storing current string which can or cannot be repeated at this moment
+            else{
+                res.append(ch);
+            }
+        }
+        return res.toString();
+    }
+}

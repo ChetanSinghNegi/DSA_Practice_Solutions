@@ -1,0 +1,58 @@
+class Solution {
+    public long countPairs(int n, int[][] edges) {
+        Graph g=new Graph(n);
+        for(int i=0;i<edges.length;i++){
+            g.addEdge(edges[i][0],edges[i][1]);
+        }
+    return g.DFS();
+    }
+}
+
+public class Graph{
+    ArrayList<Integer>[] adj;
+    int count;
+    Graph(int n){
+        adj=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            adj[i]=new ArrayList<>();
+        }
+    }
+    public void addEdge(int src,int dest){
+        adj[src].add(dest);
+        adj[dest].add(src);
+    }
+
+    public void DFS(boolean[] dp,int source){
+        if(dp[source]==true) return;
+
+        dp[source]=true;
+        count++;
+        for(int i:adj[source]){
+            DFS(dp,i);
+        }
+        return ;
+    }
+    public long DFS(){
+        boolean[] dp=new boolean[adj.length];
+        List<Integer> comps=new ArrayList<>();
+        for(int i=0;i<adj.length;i++){
+            if(dp[i]==false){
+                count=0;
+                DFS(dp,i);
+                if(count!=0){
+                    comps.add(count);
+                }
+            }
+        }
+
+        //O(n) beautiful concept to reduce O(n2) -> O(n)
+        long tSum=0;
+        for(int i=0;i<comps.size();i++){
+            long currEle = comps.get(i);
+            long currSum=(adj.length-currEle);
+            currSum=currEle*currSum;
+            tSum+=currSum;
+        }
+        return tSum/2l;
+    }
+}

@@ -1,0 +1,57 @@
+public class Solution {
+    /**
+     * @param s: the given string
+     * @return: all the palindromic permutations (without duplicates) of it
+     *          we will sort your return value in output
+     */
+    public List<String> generatePalindromes(String s) {
+        // write your code here
+        HashMap<Character,Integer> freq=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            freq.put(ch,freq.getOrDefault(ch,0)+1);
+        }
+        List<String> ans=new ArrayList<>();
+        char oddFreq='0';
+        for(Character key:freq.keySet()){
+            if(freq.get(key)%2==1){
+                if(oddFreq!='0'){
+                    return ans;
+                }
+                oddFreq=key;
+            }
+        }
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<s.length();i++){
+            sb.append('0');
+        }
+        if(s.length()%2==1){
+            int midIdx=s.length()/2;
+            sb.setCharAt(midIdx, oddFreq);
+            freq.put(oddFreq, freq.get(oddFreq)-1);
+        }
+        generatePalindromesHelper(0,sb,freq,ans);
+        return ans;
+    }
+    public void generatePalindromesHelper(int currentBox,StringBuilder sb,
+    HashMap<Character,Integer> freq,List<String> ans){
+        if(currentBox == sb.length()/2){
+            String s=new String(sb);
+            ans.add(s);
+            return;
+        }
+
+        for(Character key:freq.keySet()){
+            int val=freq.get(key);
+            if(val>0){
+                sb.setCharAt(currentBox, key);
+                sb.setCharAt(sb.length() -1 - currentBox, key);
+                freq.put(key, val-2);
+                generatePalindromesHelper(currentBox+1, sb, freq, ans);
+                sb.setCharAt(currentBox, '0');
+                sb.setCharAt(sb.length() -1 - currentBox, '0');
+                freq.put(key, val);
+            }
+        }
+    }
+}

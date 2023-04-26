@@ -1,0 +1,67 @@
+
+class Solution{
+    static class Edge implements Comparable<Edge>{
+        int src,nbr,wt;
+        Edge(int src,int nbr,int wt){
+            this.src = src;
+            this.nbr = nbr;
+            this.wt=wt;
+        }
+        
+        public int compareTo(Edge o){
+            return this.wt - o.wt;
+        }
+        
+    }
+    
+    public static class DSU{
+        int[] parent;
+        int[] ranks;
+        
+        DSU(int n){
+            parent=new int[n];
+            ranks=new int[n];
+            Arrays.fill(parent,-1);
+            Arrays.fill(ranks,1);
+        }
+        
+        int find(int ele){
+            if(parent[ele]==-1) return ele;
+            return parent[ele] = find(parent[ele]); 
+        }
+        void union(int ele1, int ele2){
+            int p1=find(ele1);
+            int p2=find(ele2);
+            if(p1==p2) return ;
+            
+            if(ranks[p1] > ranks[p2]){
+                parent[p2] = p1;
+                ranks[p1] += ranks[p2];
+            }else{
+                parent[p1] = p2;
+                ranks[p2] += ranks[p1];
+            }
+            return;
+        }
+    }
+    
+	static int spanningTree(int V, int E, int edges[][]){
+	    // Code Here. 
+	    DSU sets = new DSU(V);
+	    List<Edge> li = new ArrayList<>();
+	    for(int i=0;i<E;i++){
+	        li.add(new Edge(edges[i][0],edges[i][1],edges[i][2]));
+	    }
+	    Collections.sort(li);
+	    int cost=0;
+	    
+	    for(int i=0;i<E;i++){
+	        Edge e = li.get(i);
+	        if(sets.find(e.src) == sets.find(e.nbr)) continue;
+	        sets.union(e.src,e.nbr);
+	        cost+= e.wt;
+	    }
+	    
+	    return cost;
+	}
+}

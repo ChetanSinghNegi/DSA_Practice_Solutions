@@ -1,0 +1,45 @@
+class Solution {
+    class pair{
+        int p;
+        int s;
+        pair(int p,int s){
+            this.p=p;
+            this.s=s;
+        }
+    }
+    public static class myComp implements Comparator<pair>{
+        public int compare(pair p1,pair p2){
+            return p1.p-p2.p;
+        }
+    }
+    public int carFleet(int target, int[] position, int[] speed) {
+        int n=position.length;
+        pair[] pairs=new pair[n];
+        for(int i=0;i<n;i++){
+            pair np=new pair(position[i],speed[i]);
+            pairs[i]=np;
+        }
+        Arrays.sort(pairs,new myComp());
+        double[] ans=new double[n];
+        for(int i=n-1;i>=0;i--){
+            int leftDistance=target-pairs[i].p;
+            double leftTime=(double)leftDistance/pairs[i].s;
+            ans[i]=leftTime;
+        }
+        int count=0;
+        for(int i=n-1;i>=0;i--){
+            double curr=ans[i];
+            if(curr==Double.MIN_VALUE){
+                continue;
+            }
+            for(int j=i-1;j>=0;j--){
+                if(ans[j]!=Double.MIN_VALUE && ans[j]<=curr){
+                    ans[j]=Double.MIN_VALUE;
+                }
+            }
+            count++;
+        }
+
+        return count;
+    }
+}

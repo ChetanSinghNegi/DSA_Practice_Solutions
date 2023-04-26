@@ -1,0 +1,15 @@
+
+class Solution {
+    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        if(original==null) return null;
+        if(original==target) return cloned;
+
+        TreeNode leftFound=getTargetCopy(original.left,cloned.left,target);
+        if(leftFound!=null) return leftFound;
+        TreeNode rightFound=getTargetCopy(original.right,cloned.right,target);
+        if(rightFound!=null) return rightFound;
+
+        return null;
+
+    }
+}

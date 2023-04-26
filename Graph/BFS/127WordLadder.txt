@@ -1,0 +1,54 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashMap<String,HashSet<String>> hm=new HashMap<>();
+        wordList.add(beginWord);
+        for(int i=0;i<wordList.size();i++){
+            hm.put(wordList.get(i),new HashSet<String>());
+        }
+        for(int i=0;i<wordList.size();i++){
+            for(int j=0;j<wordList.size();j++){
+                String f=wordList.get(i);
+                String s=wordList.get(j);
+                if(checkAdj(f,s)==true){
+                    hm.get(f).add(s);
+                    hm.get(s).add(f);
+                }
+            }
+        }
+        return bfs(beginWord,endWord,hm);
+    }
+
+    //String with only 1 letter change
+    public boolean checkAdj(String s1,String s2){
+        int count=0;
+        for(int i=0;i<s1.length();i++){
+            if(s1.charAt(i)!=s2.charAt(i)) count++;
+        }
+        if(count==1) return true;
+        return false;
+    }
+
+    public class Pair{
+        String src;
+        int dist;
+        Pair(String s,int d){
+            this.src=s;
+            this.dist=d;
+        }
+    }
+    public int bfs(String src,String dest,HashMap<String,HashSet<String>> hm){
+        HashMap<String,Integer> vis=new HashMap<>();
+        Queue<Pair> q=new ArrayDeque<>();
+        q.add(new Pair(src,1));
+        while(q.size()>0){
+            Pair rem=q.remove();
+            if(vis.containsKey(rem.src)==true) continue;
+            vis.put(rem.src,rem.dist);
+            for(String nbr:hm.get(rem.src)){
+                q.add(new Pair(nbr,rem.dist+1));
+            }
+        }
+        if(vis.containsKey(dest)==false) return 0;
+        return vis.get(dest);
+    }
+}

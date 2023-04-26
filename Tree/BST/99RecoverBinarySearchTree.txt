@@ -1,0 +1,30 @@
+class Solution {
+
+    TreeNode first=null,second=null;
+    TreeNode prev=null;
+    public void recoverTree(TreeNode root) {
+        inOrder(root);
+        int temp=first.val;
+        first.val=second.val;
+        second.val=temp;
+        return;
+    }
+
+    public void inOrder(TreeNode root){
+        if(root==null) return;
+        inOrder(root.left);
+
+        //else update first and second if first time encounter else only update second
+        if(prev!=null && root.val<prev.val){
+            if(first!=null){
+                second=root;
+            }else{
+                first=prev;
+                second=root;
+            }
+        }
+        prev=root;
+
+        inOrder(root.right);
+    }
+}

@@ -1,0 +1,98 @@
+class LRUCache {
+
+    public class Node {
+        int key;
+        int val;
+        Node prev;
+        Node next;
+        Node(int key,int val){
+            this.key=key;
+            this.val=val;
+        }
+    }
+
+    int size;
+    int capacity;
+    HashMap<Integer,Node> hm;
+    LinkedList<Node> ll;
+    Node head;
+    Node tail;
+    public LRUCache(int capacity) {
+        size=0;
+        this.capacity=capacity;
+        hm=new HashMap<>();
+        ll=new LinkedList<>();
+        head=new Node(-1,-1);
+        tail=new Node(-1,-1);
+        head.next=tail;
+        tail.next=head;
+    }
+    
+    public int get(int key) {
+        if(hm.containsKey(key)==true){
+            // present in hashmap
+
+            //removing from present location
+            Node curr=hm.get(key);
+            curr.prev.next=curr.next;
+            curr.next.prev=curr.prev;
+
+            //inserting at head
+            curr.prev=head;
+            curr.next=head.next;
+            curr.prev.next=curr;
+            curr.next.prev=curr;
+            return curr.val;
+        }else{ 
+            //not present in hashmap
+            return -1;
+        }
+    }
+    
+    public void put(int key, int value) {
+        if(hm.containsKey(key)==true){  
+            //already present
+
+            //removing from present location
+            Node curr=hm.get(key);
+            curr.prev.next=curr.next;
+            curr.next.prev=curr.prev;
+
+            //inserting at head
+            curr.prev=head;
+            curr.next=head.next;
+            curr.prev.next=curr;
+            curr.next.prev=curr;
+            curr.val=value;  //updating value of key in hashmap
+            hm.put(key,curr);
+
+
+        }else{
+            //not present
+            if(size==capacity){ 
+                //removing last
+                Node curr=tail.prev;
+                curr.prev.next=curr.next;
+                curr.next.prev=curr.prev;
+                hm.remove(curr.key);
+            }else{
+                size++;
+            }
+
+            //inserting at head
+            Node curr=new Node(key,value);
+            curr.prev=head;
+            curr.next=head.next;
+            curr.prev.next=curr;
+            curr.next.prev=curr;
+            hm.put(key,curr);
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

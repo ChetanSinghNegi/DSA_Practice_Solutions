@@ -1,0 +1,45 @@
+class Solution {
+    public int findMin(int[] nums) {
+        int left=0;
+        int right=nums.length-1;
+
+        //no rotation sorted array
+        if(nums[left]<=nums[right]){
+            return nums[0];
+        }
+
+        while(left<=right){
+            int mid=left+(right-left)/2;
+            if(isMinimum(mid,nums)){
+                return nums[mid];
+            }
+            if(isMaximum(mid,nums)){
+                return nums[mid+1];
+            }
+            if(nums[left]<nums[mid]){
+                left=mid+1;
+            }else{
+                right=mid-1;
+            }
+        }
+
+        //default
+        return -1;
+    }
+    public boolean isMinimum(int mid,int[] nums){
+        int lVal=(mid-1>=0)?nums[mid-1]:Integer.MAX_VALUE;
+        int rVal=(mid+1<nums.length)?nums[mid+1]:Integer.MAX_VALUE;
+        if(nums[mid]<lVal && nums[mid]<rVal){
+            return true;
+        }
+        return false;
+    }
+    public boolean isMaximum(int mid,int[] nums){
+        int lVal=(mid-1>=0)?nums[mid-1]:Integer.MIN_VALUE;
+        int rVal=(mid+1<nums.length)?nums[mid+1]:Integer.MIN_VALUE;
+        if(nums[mid]>lVal && nums[mid]>rVal){
+            return true;
+        }
+        return false;
+    }
+}
