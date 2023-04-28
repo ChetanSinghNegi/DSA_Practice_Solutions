@@ -1,4 +1,4 @@
-//Memoization
+//Memoization  O(n2) S(n)
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length ;
@@ -28,7 +28,7 @@ class Solution {
     }
 }
 
-//Tabulation
+//Tabulation  O(n2) S(n)
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length ;
@@ -46,5 +46,39 @@ class Solution {
 
         return max;
 
+    }
+}
+
+//Binary Search O(nlogn) S(n)
+class Solution {
+
+    public int BS(int target, ArrayList<Integer> fakeLIS, int[] nums){
+        int l = 0, r = fakeLIS.size() - 1;
+        int lowerBound = fakeLIS.size();
+        while(l <= r){
+            int mid = l + (r - l)/2;
+            if(fakeLIS.get(mid) < target){
+                l = mid + 1;
+            }else{
+                lowerBound = mid;
+                r = mid - 1;
+            }
+        }
+        return lowerBound;
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        ArrayList<Integer> fakeLIS = new ArrayList<>();
+        fakeLIS.add(nums[0]);
+        for(int i = 1; i < n; i++){
+            int lowerBound = BS(nums[i], fakeLIS, nums);
+            if(lowerBound == fakeLIS.size()){
+                fakeLIS.add(nums[i]);
+            }else{
+                fakeLIS.set(lowerBound, nums[i]);
+            }
+        }
+        return fakeLIS.size();
     }
 }
