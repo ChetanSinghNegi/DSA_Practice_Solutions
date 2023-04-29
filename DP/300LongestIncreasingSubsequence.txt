@@ -52,7 +52,7 @@ class Solution {
 //Binary Search O(nlogn) S(n)
 class Solution {
 
-    public int BS(int target, ArrayList<Integer> fakeLIS, int[] nums){
+    public int BS(int target, ArrayList<Integer> fakeLIS){
         int l = 0, r = fakeLIS.size() - 1;
         int lowerBound = fakeLIS.size();
         while(l <= r){
@@ -72,7 +72,7 @@ class Solution {
         ArrayList<Integer> fakeLIS = new ArrayList<>();
         fakeLIS.add(nums[0]);
         for(int i = 1; i < n; i++){
-            int lowerBound = BS(nums[i], fakeLIS, nums);
+            int lowerBound = BS(nums[i], fakeLIS);
             if(lowerBound == fakeLIS.size()){
                 fakeLIS.add(nums[i]);
             }else{

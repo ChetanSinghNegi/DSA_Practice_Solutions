@@ -1,0 +1,49 @@
+//Memoization O(n2) S(n2)
+class Solution
+{
+	public int maxSumIS(int arr[], int n)  
+	{  
+	    //code here.
+	    int[][] dp = new int[n + 1][n + 1];
+	    for(int i = 0; i <= n; i++){
+	        Arrays.fill(dp[i], -1);
+	    }
+	    int ans = helper(0, -1, dp, arr);
+	    return ans;
+	}  
+	
+	public int helper(int idx, int prev, int[][] dp, int[] arr){
+	    if(idx == arr.length) return 0;
+	    
+	    if(dp[idx][prev + 1] != -1) return dp[idx][prev + 1];
+	    
+	    int yes = (prev == -1 || arr[idx] > arr[prev])? helper(idx + 1, idx, dp, arr) + arr[idx] : -1;
+	    int no = helper(idx + 1, prev, dp, arr);
+	    dp[idx][prev + 1] = Math.max(yes, no);
+	    return dp[idx][prev + 1];
+	    
+	}
+}
+
+
+//Tabulation O(n2) S(n)
+class Solution
+{
+	public int maxSumIS(int arr[], int n)  
+	{  
+	    //code here.
+	    int[] dp = new int[n];
+	    int max = 0;
+	    for(int i = 0; i < n; i++){
+	        dp[i] = arr[i];
+	        for(int prev = 0; prev < i; prev++){
+	            if(arr[i] > arr[prev] && dp[prev] + arr[i] > dp[i]){
+	                dp[i] = dp[prev] + arr[i];
+	            }
+	        }
+	        max = Math.max(max, dp[i]);
+	    }
+	    return max;
+	    
+	}
+}
