@@ -6,7 +6,9 @@ class Solution {
         DFS(graph,dp,0,graph.length-1,path,paths);
         return paths;
     }
-    public void DFS(int[][] graph,boolean[] dp,int src,int dest,List<Integer> path,List<List<Integer>> paths){
+    public void DFS(int[][] graph,boolean[] dp,int src,int dest,List<Integer>
+                     path,List<List<Integer>> paths){
+                        
         if(dp[src]==true) return;
         
         //positive base case

@@ -1,0 +1,72 @@
+//Memoization O(n * m) S(n * m)
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int[][] dp = new int[text1.length()][text2.length()];
+        for(int i = 0; i < text1.length(); i++){
+            Arrays.fill(dp[i],-1);
+        }
+        return helper(0, 0, dp, text1, text2);
+    }
+
+    public int helper(int idx1, int idx2, int[][] dp, String s1, String s2){
+        if(idx1 == s1.length() || idx2 == s2.length()) return 0;
+
+        if(dp[idx1][idx2] != -1) return dp[idx1][idx2];
+
+        //Yes call 
+        if(s1.charAt(idx1) == s2.charAt(idx2)){
+            return helper(idx1 + 1, idx2 + 1, dp, s1, s2) + 1;
+        } 
+
+        //s1 idx ignored
+        int CSLen1 = helper(idx1 + 1, idx2, dp, s1, s2);
+        //s2 idx ignored
+        int CSLen2 = helper(idx1, idx2 + 1, dp, s1, s2);
+        
+        dp[idx1][idx2] = Math.max(CSLen1, CSLen2);;
+        return dp[idx1][idx2];
+    }
+}
+
+//tabulation O(n * m) S(n * m)
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int n = text1.length();
+        int m = text2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for(int i = n - 1; i >= 0; i--){
+            for(int j = m - 1 ; j >= 0; j--){
+                if(text1.charAt(i) == text2.charAt(j)){
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                }else{
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+            }
+        }
+        
+        return dp[0][0];
+    }
+}
+
+//tabulation O(n * m) S(m)
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int n = text1.length();
+        int m = text2.length();
+        int[] prevDP = new int[m + 1];
+
+        for(int i = n - 1; i >= 0; i--){
+            int[] currDP = new int[m + 1];
+            for(int j = m - 1 ; j >= 0; j--){
+                if(text1.charAt(i) == text2.charAt(j)){
+                    currDP[j] = 1 + prevDP[j + 1];
+                }else{
+                    currDP[j] = Math.max(currDP[j + 1], prevDP[j]);
+                }
+            }
+            prevDP = currDP;
+        }
+        
+        return prevDP[0];
+    }
+}

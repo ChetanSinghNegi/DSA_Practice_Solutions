@@ -20,7 +20,9 @@ class Solution {
         return false;
         
     }
-    public boolean isCycleBFS(int src, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+    public boolean isCycleBFS(int src,
+         ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+            
         Queue<Integer> q=new ArrayDeque<>();
         q.add(src);
         while(q.size()>0){
@@ -34,7 +36,9 @@ class Solution {
         return false;
     }
     
-    public boolean isCycleDFS(int src, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+    public boolean isCycleDFS(int src, int parent,
+             ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+
         vis[src]=true;
         
         for(int nbr:adj.get(src)){

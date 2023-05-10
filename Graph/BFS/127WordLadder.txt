@@ -1,5 +1,6 @@
 class Solution {
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength(String beginWord,
+                 String endWord, List<String> wordList) {
         HashMap<String,HashSet<String>> hm=new HashMap<>();
         wordList.add(beginWord);
         for(int i=0;i<wordList.size();i++){
@@ -36,7 +37,8 @@ class Solution {
             this.dist=d;
         }
     }
-    public int bfs(String src,String dest,HashMap<String,HashSet<String>> hm){
+    public int bfs(String src,String dest
+                ,HashMap<String,HashSet<String>> hm){
         HashMap<String,Integer> vis=new HashMap<>();
         Queue<Pair> q=new ArrayDeque<>();
         q.add(new Pair(src,1));

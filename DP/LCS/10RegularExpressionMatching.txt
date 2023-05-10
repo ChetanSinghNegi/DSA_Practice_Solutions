@@ -1,0 +1,32 @@
+class Solution {
+    public boolean isMatch(String s, String p) {
+        Boolean[][] dp = new Boolean[s.length() + 1][p.length() + 1];
+        return helper(0, 0, s, p, dp);
+    }
+
+    public boolean helper(int idx1, int idx2, String s1, String s2, Boolean[][] dp){
+        if(idx1 == s1.length() && idx2 == s2.length()){
+            return true;
+        }
+        if(idx2 >= s2.length()){
+            return false;
+        }
+
+        if(dp[idx1][idx2] != null) return dp[idx1][idx2];
+
+        boolean currMatch = idx1 < s1.length() && (s1.charAt(idx1) == s2.charAt(idx2) || s2.charAt(idx2) == '.');
+
+        if(idx2 + 1 < s2.length() && s2.charAt(idx2 + 1) == '*'){
+            boolean no = helper(idx1, idx2 + 2, s1, s2, dp);
+            if(no == true) return dp[idx1][idx2] = true;
+            boolean yes = currMatch && helper(idx1 + 1, idx2, s1, s2, dp);
+            return dp[idx1][idx2] = yes;
+        }else{
+            if(currMatch){
+                return dp[idx1][idx2] = helper(idx1 + 1, idx2 + 1, s1, s2, dp);
+            }else{
+                return dp[idx1][idx2] = false;
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int[][] dp = new int[s.length() + 1][p.length() + 1];
+        int ans = helper(0, 0, s, p, dp);
+        if(ans == -1) return false;
+        return true;
+    }
+
+    public int helper(int i, int j, String s, String p, int[][] dp){
+        
+        // positive base case  ....both string compared and equal
+        if(i == s.length() && j == p.length()) return 1;
+
+        //first string left and second empty so not equal
+        if(i < s.length() && j == p.length()) return -1;
+
+        //SpecialCase first empty and second left.....here second can be "****" also
+        if(i == s.length() && j < p.length()){
+            for(int k = j; k < p.length(); k++){
+                if(p.charAt(k) != '*') return -1;
+            }
+            return 1;
+        }
+
+        if(dp[i][j] != 0) return dp[i][j];
+        char ch1 = s.charAt(i);
+        char ch2 = p.charAt(j);
+        if(ch1 == ch2 || ch2 == '?'){
+            return dp[i][j] = helper(i + 1, j + 1, s, p, dp);
+        }else if(ch2 == '*'){
+            int no = helper(i, j + 1, s, p, dp);
+            if(no == 1) return dp[i][j] = 1;
+            int yes = helper(i + 1, j, s, p, dp);
+            return dp[i][j] = yes;
+        }
+        return dp[i][j] = -1;
+    }
+}

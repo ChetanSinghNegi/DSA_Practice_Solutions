@@ -1,0 +1,21 @@
+class Solution {
+    public int numberOfArithmeticSlices(int[] nums) {
+        if( nums.length < 3) return 0;
+        int curr = 2;
+        int diff = nums[1] - nums[0];
+        int ans = 0;
+        for(int i = 2; i < nums.length; i++){
+            int currDiff = nums[i] - nums[i - 1];
+            if(currDiff == diff){
+                curr++;
+            }else{
+                curr = 2;
+                diff = currDiff;
+            }
+            if(curr >= 3){
+                ans += curr - 3 + 1;
+            }
+        }
+        return ans;
+    }
+}

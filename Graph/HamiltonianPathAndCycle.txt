@@ -5,7 +5,8 @@ import java.util.*;
 
 class Main {
 
-    public static boolean isEdge(int src, int dest, ArrayList<Integer>[] graph) {
+    public static boolean isEdge(int src, 
+                int dest, ArrayList<Integer>[] graph) {
         for (Integer nbr : graph[src]) {
             if (nbr == dest)
                 return true;
@@ -14,7 +15,10 @@ class Main {
     }
 
     // Time - O(Exponential) All Paths from Source to Destination
-    public static void DFS(int src, boolean[] vis, ArrayList<Integer>[] graph, int visCount, String path) {
+    public static void DFS(int src, boolean[] vis, 
+                            ArrayList<Integer>[] graph, 
+                            int visCount, String path) {
+                                
         if (vis[src] == true)
             return;
 

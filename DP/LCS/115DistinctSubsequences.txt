@@ -1,0 +1,55 @@
+//Memoization O(n2) S(n2)
+class Solution {
+    public int numDistinct(String s, String t) {
+        int[][] dp = new int[s.length() + 1][t.length() + 1];
+        for(int i = 0; i <= s.length(); i++){
+            Arrays.fill(dp[i], -1);
+        }
+        return dfs(0, 0, s, t, dp);
+    }
+
+    public int dfs(int i, int j, String s, String t, int[][] dp){
+        if(j == t.length()){
+            return 1;
+        }
+        if(i == s.length()) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+
+        char ch1 = s.charAt(i);
+        char ch2 = t.charAt(j);
+        int currCount = 0;
+        if(ch1 == ch2){
+            currCount += dfs(i + 1, j + 1, s, t, dp);
+        }
+        currCount += dfs(i + 1, j, s, t, dp);
+        dp[i][j] = currCount;
+        return currCount;
+    }
+}
+
+//tabulation O(n2) S(n2)
+class Solution {
+    public int numDistinct(String text1, String text2) {
+        int n = text1.length();
+        int m = text2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for(int i = 0; i <= n; i++){
+            dp[i][m] = 1;
+        }
+        for(int i = n - 1; i >= 0; i--){
+            for(int j = m - 1 ; j >= 0; j--){
+                
+                //same chars
+                if(text1.charAt(i) == text2.charAt(j)){
+                    dp[i][j] += dp[i + 1][j + 1];
+                }
+
+                //diff chars so only skipping ith index of first string
+                dp[i][j] += dp[i + 1][j];
+                
+            }
+        }
+        return dp[0][0];
+        
+    }
+}

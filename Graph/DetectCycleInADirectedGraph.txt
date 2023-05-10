@@ -17,7 +17,8 @@ class Solution {
     //-1 not visited
     //0 is visited with same path
     //1 is visited with different path
-    public boolean isCycleDFS(int src, ArrayList<ArrayList<Integer>> adj, int[] vis){
+    public boolean isCycleDFS(int src,
+             ArrayList<ArrayList<Integer>> adj, int[] vis){
         if(vis[src]==0) return true;  //same path visited so cycle
         if(vis[src]==1) return false; //different path visited so not a cycle 
         

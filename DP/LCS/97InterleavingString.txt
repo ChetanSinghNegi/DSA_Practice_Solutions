@@ -1,0 +1,25 @@
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if(s1.length() + s2.length() != s3.length()) return false;
+        Boolean[][] dp = new Boolean[s1.length() + 1][s2.length() + 1];
+        return helper(0, 0, 0, s1, s2, s3, dp);
+    }
+
+    public boolean helper(int idx1, int idx2, int idx3, String s1, String s2, String s3, Boolean[][] dp){
+        if(idx3 == s3.length()) return true;
+
+        if(dp[idx1][idx2] != null) return dp[idx1][idx2];
+        char ch1 = idx1 < s1.length()? s1.charAt(idx1):'A';
+        char ch2 = idx2 < s2.length()? s2.charAt(idx2):'B';
+        char ch3 = s3.charAt(idx3);
+        if(ch1 == ch3){
+            boolean ans1 = helper(idx1 + 1, idx2, idx3 + 1, s1, s2, s3, dp);
+            if(ans1 == true) return dp[idx1][idx2] = true;
+        }
+        if(ch2 == ch3){
+            boolean ans2 = helper(idx1, idx2 + 1, idx3 + 1, s1, s2, s3, dp);
+            if(ans2 == true) return dp[idx1][idx2] = true;
+        }
+        return dp[idx1][idx2] = false;
+    }
+}

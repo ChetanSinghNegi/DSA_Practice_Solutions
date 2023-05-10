@@ -1,0 +1,35 @@
+//Memoization O(n2) S(n)
+class Solution {
+    public int numTrees(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+        return catalan(n, dp);
+    }
+
+    public int catalan(int n, int[] dp){
+        if(n == 0 || n == 1) return 1;
+
+        if(dp[n] != -1) return dp[n];
+        int currVal = 0;
+        for(int i = 0; i < n; i++){
+            currVal += catalan(i, dp) * catalan(n - 1 - i, dp);
+        }
+        return dp[n] = currVal;
+    }
+}
+
+//tabulation O(n2) S(n)
+class Solution {
+    public int numTrees(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for(int i = 2; i <= n; i++){
+            for(int j = 0; j < i; j++){
+                int k = i - 1 - j;
+                dp[i] += dp[j] * dp[k];
+            }
+        }
+        return dp[n];
+    }
+}

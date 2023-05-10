@@ -1,0 +1,60 @@
+//two pointer
+class Solution {
+    public int longestMountain(int[] nums) {
+        int n = nums.length;
+        int maxLM = 0;
+        for(int i = 0; i < n; i++){
+            if( i != 0 && i != nums.length - 1 && nums[i - 1] < nums[i] && nums[i] > nums[i + 1]){
+                int curr = 0;
+                int left = i - 1;
+                while(left >= 0 && nums[left] < nums[left + 1]){
+                    curr++;
+                    left--;
+                }
+                int right = i + 1;
+                while(right < n && nums[right] < nums[right - 1]){
+                    curr++;
+                    right++;
+                }
+                curr++;
+                maxLM = Math.max(maxLM, curr);
+            }
+        }
+        return maxLM != 1? maxLM: 0;
+    }
+}
+
+//dp solution
+class Solution {
+    public int longestMountain(int[] nums) {
+        int n = nums.length;
+        int[] inc = new int[n];
+        int[] dec = new int[n];
+        int curr = 0;
+        for(int i = 0; i < n; i++){
+            if(i == 0 || nums[i] > nums[i - 1]){
+                curr++;
+            }else{
+                curr = 1;
+            }
+            inc[i] = curr;
+        }
+        curr = 0;
+        for(int i = n - 1; i >= 0; i--){
+            if(i == n - 1 || nums[i] > nums[i + 1]){
+                curr++;
+            }else{
+                curr = 1;
+            }
+            dec[i] = curr;
+        }
+
+        int max = 0;
+        for(int i = 0; i < n; i++){
+            if(inc[i] == 1 || dec[i] == 1) continue;
+            max = Math.max(max, inc[i] + dec[i] - 1);
+        }
+        if(max == 1) return 0;
+        return max;
+    }
+}

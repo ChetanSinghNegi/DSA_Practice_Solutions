@@ -13,7 +13,8 @@ class Solution {
         return count;
     }
     public void dfs(char[][] grid,boolean[][] vis,int sr,int sc){
-        if(sr>=grid.length || sr<0 || sc>=grid[0].length || sc<0 || vis[sr][sc]==true || grid[sr][sc]=='0') return ;
+        if(sr>=grid.length || sr<0 || sc>=grid[0].length ||
+             sc<0 || vis[sr][sc]==true || grid[sr][sc]=='0') return ;
 
         vis[sr][sc]=true;
         dfs(grid,vis,sr-1,sc);
